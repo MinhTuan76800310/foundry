@@ -1,0 +1,9 @@
+{
+  "name": "doc-flow",
+  "description": "Brief-before, report-after documentation workflow: OKR framing plus Mermaid visuals (architecture, layers, control flow, data flow).",
+  "version": "0.1.0",
+  "author": {
+    "name": "minhtuan958"
+  },
+  "keywords": ["documentation", "okr", "mermaid", "brief", "report"]
+}

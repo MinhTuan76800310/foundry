@@ -1,0 +1,13 @@
+{
+  "name": "doc-flow",
+  "owner": {
+    "name": "minhtuan958"
+  },
+  "plugins": [
+    {
+      "name": "doc-flow",
+      "source": "./",
+      "description": "Brief-before, report-after documentation workflow: OKR framing plus Mermaid visuals (architecture, layers, control flow, data flow)."
+    }
+  ]
+}
