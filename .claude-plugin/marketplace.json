@@ -1,6 +1,6 @@
 {
   "name": "doc-flow",
-  "description": "Documentation workflow plugins: brief-before, report-after with OKR framing and Mermaid visuals.",
+  "description": "Documentation lifecycle plugins: brainstorm → brief → work → report with OKR framing, worklogs and Mermaid visuals.",
   "owner": {
     "name": "minhtuan958"
   },
@@ -8,7 +8,7 @@
     {
       "name": "doc-flow",
       "source": "./",
-      "description": "Brief-before, report-after documentation workflow: OKR framing plus Mermaid visuals (architecture, layers, control flow, data flow)."
+      "description": "Brainstorm → brief → work → report documentation lifecycle: OKR framing, ADR-lite decisions, worklog-backed plan-vs-actual, layered reports, Mermaid visuals."
     }
   ]
 }

@@ -1,9 +1,9 @@
 ---
 name: doc-visuals
-description: Conventions for German-engineering-style documentation visuals in Mermaid — architecture diagrams, layer views, control flow, data flow — plus OKR writing rules. Use when writing briefs, reports, or any technical doc that needs diagrams or Key Results.
+description: Conventions for German-engineering-style documentation — Mermaid visuals (architecture, layer views, control flow, data flow), OKR writing rules, pyramid-principle report writing, and ADR-lite decision records. Use when writing brainstorms, briefs, worklogs, reports, or any technical doc that needs diagrams, Key Results, or an executive summary.
 ---
 
-# doc-visuals — diagram & OKR conventions
+# doc-visuals — diagram, OKR & report-writing conventions
 
 ## General rules (all diagrams)
 
@@ -106,3 +106,25 @@ flowchart LR
     `npm test parser`" (outcome + verification).
 - In reports, score each KR ✅ met / ⚠️ partial / ❌ missed **with evidence**.
   Unverifiable claims are marked `unverified`, never rounded up to ✅.
+
+## Document writing rules (briefs & reports)
+
+- **Overview before detail — map of the forest.** Every document opens with
+  3–5 lines a zero-context reader understands: problem, expected result,
+  where it sits in the bigger system. Trees, bark and leaves come after.
+- **Conclusion first (pyramid).** Documents and sections state the conclusion
+  first, then the supporting evidence. The executive summary must stand alone
+  for a non-engineer; detail sections deepen it, never contradict it.
+- **One layered document, not one per audience.** Order sections
+  CTO → business → engineering so each reader stops when satisfied. Sections
+  are modular: liftable into slides unchanged, one message per section, no
+  forward references.
+- **Status pattern** (summaries, weeklies): one honest paragraph + max 3
+  "done" bullets + max 3 "next" bullets + one "decision needed" line. Only
+  facts the evidence backs — no aspirational phrasing.
+- **Decisions as ADR-lite rows**: decision / options considered / chosen
+  because. Rejected options stay listed — they document the thinking and stop
+  the debate from reopening.
+- **Plan of record discipline.** After approval a brief is not edited;
+  reality is appended to the worklog and reconciled in the report. Deviations
+  are information, not failures.
