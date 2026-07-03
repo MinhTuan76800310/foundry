@@ -1,5 +1,6 @@
 {
   "name": "doc-flow",
+  "description": "Documentation workflow plugins: brief-before, report-after with OKR framing and Mermaid visuals.",
   "owner": {
     "name": "minhtuan958"
   },
