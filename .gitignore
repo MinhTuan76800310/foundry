@@ -1,2 +1,6 @@
 .DS_Store
 *.log
+
+# Local Claude Code config — machine-specific, not part of the distributable plugin
+.claude/
+.mcp.json
