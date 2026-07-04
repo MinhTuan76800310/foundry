@@ -2,8 +2,8 @@
 
 | | |
 |---|---|
-| **Brief** | [brief.md](./brief.md) — plan of record |
-| **Report** | [report.md](./report.md) — created after completion |
+| **Brief** | [brief.html](./brief.html) — plan of record |
+| **Report** | [report.html](./report.html) — created after completion |
 
 > Append-only log kept DURING implementation. One line per event, newest last.
 > The brief is never edited after approval — deviations live here, and the

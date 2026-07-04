@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><meta charset="UTF-8"><title>v0.3 smoke test — bundle</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk&family=Newsreader&family=JetBrains+Mono&display=swap" rel="stylesheet">
+<style>:root{--paper:#F5EEDC;--ink:#0B2545;--orange:#D75C2A;--green:#2A7553}body{margin:0;background:var(--paper);font-family:Newsreader,serif;color:var(--ink)}
+.top-nav{position:fixed;top:0;left:0;right:0;background:rgba(245,238,220,.9);border-bottom:1px solid #ccc;padding:10px 24px;font-family:'Space Grotesk',sans-serif;font-size:10px}
+.top-nav a{margin-right:14px;color:var(--ink)}.section{padding:80px 24px 48px;max-width:1000px;margin:0 auto;border-top:1px solid #ddd}
+.doc-card{border:1px solid var(--ink);background:#FCF9EF;padding:24px;margin-top:16px}.data-table{width:100%;border-collapse:collapse;font-size:14px}
+.data-table td,.data-table th{border:1px solid #ddd;padding:8px}#kr-canvas,#timeline-canvas{width:100%;display:block;border:1px solid var(--ink)}
+#kr-canvas{height:140px}#timeline-canvas{height:100px}.btn{padding:8px 12px;border:1px solid var(--orange);background:transparent;cursor:pointer;color:var(--orange)}
+</style></head>
+<body>
+<nav class="top-nav"><a href="#report">Report</a><a href="#brief">Brief</a><a href="#worklog">Worklog</a><a href="#viz">Viz</a></nav>
+<section id="report" class="section"><h1>Report (embedded)</h1><div class="doc-card">
+<h2>Executive</h2><p>Smoke test: brief.html + worklog deviation + report.html + this index bundle.</p>
+<h2>Key Results</h2><table class="data-table"><tr><th>KR</th><th>Score</th></tr><tr><td>KR1 brief.html</td><td>✅</td></tr><tr><td>KR2 ≥2 interactive</td><td>✅</td></tr></table>
+<h2>Plan vs Actual</h2><table class="data-table"><tr><th>Planned</th><th>Actual</th></tr><tr><td>manual verify</td><td>verify-v03-checklist.sh (D1)</td></tr></table></div></section>
+<section id="brief" class="section"><h1>Brief (embedded full)</h1><div class="doc-card">
+<p><strong>Status:</strong> Approved</p>
+<p>Verify doc-flow writes brief.html with viz-first HTML and two interactive widgets.</p>
+<h3>Key Results</h3><table class="data-table"><tr><th>#</th><th>KR</th><th>Verification</th></tr>
+<tr><td>KR1</td><td>brief.html exists</td><td>test -f brief.html</td></tr>
+<tr><td>KR2</td><td>≥2 interactive</td><td>checklist</td></tr></table>
+<h3>Approach</h3><ol><li>Create brief.html</li><li>Worklog deviation</li><li>report.html + index.html</li></ol></div></section>
+<section id="worklog" class="section"><h1>Worklog (embedded full)</h1><div class="doc-card">
+<table class="data-table"><thead><tr><th>When</th><th>Type</th><th>Entry</th></tr></thead>
+<tbody><tr><td>14:00</td><td>step</td><td>Created worklog</td></tr>
+<tr><td>14:01</td><td>deviation</td><td>Extra verify script (D1)</td></tr></tbody></table>
+<h3>Deviation register</h3><table class="data-table"><tr><td>D1</td><td>manual verify</td><td>verify-v03-checklist.sh</td></tr></table></div></section>
+<section id="viz" class="section"><h1>Interactive</h1>
+<canvas id="kr-canvas"></canvas><canvas id="timeline-canvas"></canvas>
+<button type="button" class="btn" id="btn-play">Play timeline</button>
+<p id="cap" class="mono" style="font-size:13px"></p></section>
+<script>
+const LOG=[{t:'14:00',type:'step'},{t:'14:01',type:'deviation'}];
+(function(){const k=document.getElementById('kr-canvas').getContext('2d');k.fillStyle='#2A7553';k.fillRect(10,10,180,30);
+let i=0;function drawT(){const t=document.getElementById('timeline-canvas').getContext('2d');t.clearRect(0,0,400,100);
+t.strokeStyle='#0B2545';t.beginPath();t.moveTo(20,50);t.lineTo(380,50);t.stroke();
+LOG.forEach((e,n)=>{const x=20+n*180;t.fillStyle=e.type==='deviation'?'#D75C2A':'#2A7553';t.beginPath();t.arc(x,50,8,0,7);t.fill();});
+document.getElementById('cap').textContent=LOG[i].t+' '+LOG[i].type;}
+drawT();document.getElementById('btn-play').onclick=function(){i=(i+1)%LOG.length;drawT();};})();
+</script>
+</body></html>

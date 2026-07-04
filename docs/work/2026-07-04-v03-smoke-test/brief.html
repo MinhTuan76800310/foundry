@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Brief — v0.3 smoke test</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Newsreader&family=JetBrains+Mono&display=swap" rel="stylesheet">
+<style>
+:root{--paper:#F5EEDC;--paper-white:#FCF9EF;--ink:#0B2545;--ink-soft:rgba(11,37,69,.65);--ink-trace:rgba(11,37,69,.12);--orange:#D75C2A;--green:#2A7553;--grid-minor:rgba(11,37,69,.075)}
+*{box-sizing:border-box}body{margin:0;background:var(--paper);color:var(--ink);font-family:Newsreader,serif;font-size:17px;line-height:1.55}
+.mono{font-family:'JetBrains Mono',monospace}.top-nav{position:fixed;top:0;left:0;right:0;z-index:100;background:rgba(245,238,220,.9);border-bottom:1px solid var(--ink-trace)}
+.top-nav-inner{max-width:1200px;margin:0 auto;padding:12px 24px;display:flex;gap:16px;align-items:center;justify-content:space-between}
+.brand{font-family:'Space Grotesk',sans-serif;font-weight:700}.brand span{color:var(--orange)}
+.container{max-width:1200px;margin:0 auto;padding:0 24px}.section{padding:88px 0 64px;border-top:1px solid var(--ink-trace)}.hero{padding-top:88px;border-top:none}
+.hero-title{font-family:'Space Grotesk',sans-serif;font-size:clamp(32px,6vw,64px);font-weight:700;margin:0}
+.doc-card{background:var(--paper-white);border:1px solid var(--ink);padding:28px 32px;margin-top:20px}
+.data-table{width:100%;border-collapse:collapse;font-size:14px;margin:12px 0}.data-table th,.data-table td{padding:10px;border:1px solid var(--ink-trace)}
+.btn{font-family:'Space Grotesk',sans-serif;font-size:10px;text-transform:uppercase;padding:8px 14px;border:1px solid var(--ink);background:transparent;cursor:pointer;margin-right:8px}
+.btn.orange{border-color:var(--orange);color:var(--orange)}.canvas-frame{border:1px solid var(--ink);background:var(--paper-white);margin:16px 0}
+#kr-canvas{width:100%;height:180px;display:block}.flow-edge{fill:none;stroke:var(--ink);stroke-width:2}.node-box{cursor:pointer}
+</style>
+</head>
+<body>
+<header class="top-nav"><div class="top-nav-inner"><div class="brand"><span>◈</span> BRIEF</div><span class="mono" style="font-size:11px;color:var(--ink-soft)">Status: Approved</span></div></header>
+<main>
+<section id="overview" class="section hero"><div class="container"><h1 class="hero-title">v0.3 smoke test</h1>
+<p>Verify doc-flow writes <span class="mono">brief.html</span> with viz-first HTML and two interactive widgets.</p></div></section>
+<section id="key-results" class="section"><div class="container doc-card"><h2>Key Results</h2>
+<div class="canvas-frame"><canvas id="kr-canvas"></canvas></div>
+<table class="data-table"><thead><tr><th>#</th><th>KR</th><th>Target</th><th>Verification</th></tr></thead>
+<tbody><tr><td>KR1</td><td>brief.html exists</td><td>file present</td><td class="mono">test -f brief.html</td></tr>
+<tr><td>KR2</td><td>≥2 interactive elements</td><td>kr canvas + verify btn</td><td>manual / checklist</td></tr></tbody></table>
+<button type="button" class="btn orange" id="btn-verify-kr1">Run KR1 verify</button>
+<p class="mono" id="verify-out" style="margin-top:12px;font-size:13px;color:var(--ink-soft)">(click Run)</p></div></section>
+<section id="architecture" class="section"><div class="container doc-card"><h2>Architecture</h2>
+<div class="canvas-frame"><svg viewBox="0 0 400 120" style="width:100%"><rect x="20" y="30" width="100" height="50" fill="#FCF9EF" stroke="#0B2545"/><text x="70" y="60" text-anchor="middle" font-size="12">plugin</text>
+<line x1="120" y1="55" x2="160" y2="55" stroke="#0B2545" stroke-width="2"/><rect x="160" y="30" width="100" height="50" fill="#FCF9EF" stroke="#D75C2A" stroke-width="2"/><text x="210" y="60" text-anchor="middle" font-size="12">brief.html</text></svg></div></div></section>
+<section id="approach" class="section"><div class="container doc-card"><h2>Approach</h2><ol><li>Create brief.html — KR1</li><li>Append worklog deviation — KR2 process</li><li>Write report.html + index.html</li></ol></div></section>
+</main>
+<script>
+(function(){
+  const c=document.getElementById('kr-canvas'),x=c.getContext('2d');
+  function draw(){const r=c.getBoundingClientRect(),d=devicePixelRatio||1;c.width=r.width*d;c.height=180*d;x.setTransform(d,0,0,d,0,0);
+  x.fillStyle='rgba(11,37,69,.08)';x.fillRect(20,40,r.width-40,36);x.fillStyle='#2A7553';x.fillRect(20,40,(r.width-40)*0.5,36);
+  x.strokeStyle='#0B2545';x.strokeRect(20,40,r.width-40,36);x.fillStyle='#0B2545';x.font='12px Space Grotesk';x.fillText('KR targets (animated on load)',20,30);}
+  draw();window.addEventListener('resize',draw);
+  document.getElementById('btn-verify-kr1').onclick=function(){document.getElementById('verify-out').textContent='test -f brief.html → exit 0 (simulated) — KR1 ✅';}
+})();
+</script>
+</body>
+</html>
