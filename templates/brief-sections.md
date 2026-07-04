@@ -1,3 +1,6 @@
+> **v0.3:** This file is a **section checklist** for content inside `brief.html` only.
+> Do not write `brief.md` to task folders. Output path: `docs/work/<date>-<slug>/brief.html`.
+
 # Brief — {Task Title}
 
 | | |
@@ -7,7 +10,7 @@
 | **Status** | Draft → Approved (plan of record once approved) |
 | **Brainstorm** | [brainstorm.md](./brainstorm.md) — or _none_ |
 | **Worklog** | [worklog.md](./worklog.md) — kept during implementation |
-| **Report** | [report.md](./report.md) — created after completion |
+| **Report** | [report.html](./report.html) — created after completion |
 
 ## 0. Overview — map of the forest
 

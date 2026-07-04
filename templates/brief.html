@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Brief — <!-- SLOT:title --></title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Newsreader:ital,wght@0,400;0,500;1,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+/* doc-flow v0.3 — paste into <style> in brief.html, report.html, bundle.html */
+:root {
+  --paper: #F5EEDC; --paper-warm: #EDE3C9; --paper-white: #FCF9EF;
+  --ink: #0B2545; --ink-2: #1A3A5C; --ink-soft: rgba(11,37,69,0.65);
+  --ink-faint: rgba(11,37,69,0.35); --ink-trace: rgba(11,37,69,0.12);
+  --orange: #D75C2A; --orange-soft: rgba(215,92,42,0.16); --orange-deep: #A8421A;
+  --green: #2A7553; --green-soft: rgba(42,117,83,0.16);
+  --grid-minor: rgba(11,37,69,0.075);
+}
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body { margin: 0; background: var(--paper); color: var(--ink);
+  font-family: 'Newsreader', Georgia, serif; font-size: 17px; line-height: 1.55; }
+.mono { font-family: 'JetBrains Mono', monospace; }
+body::before {
+  content: ''; position: fixed; inset: 0;
+  background-image: linear-gradient(var(--grid-minor) 1px, transparent 1px),
+    linear-gradient(90deg, var(--grid-minor) 1px, transparent 1px);
+  background-size: 24px 24px; pointer-events: none; z-index: 0; opacity: 0.55;
+}
+main, header, footer { position: relative; z-index: 1; }
+.top-nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+  backdrop-filter: blur(10px); background: rgba(245,238,220,0.88);
+  border-bottom: 1px solid var(--ink-faint);
+}
+.top-nav-inner {
+  max-width: 1200px; margin: 0 auto; padding: 12px 24px;
+  display: flex; flex-wrap: wrap; gap: 12px 20px; align-items: center; justify-content: space-between;
+}
+.brand { font-family: 'Space Grotesk', sans-serif; font-weight: 700; font-size: 16px; }
+.brand span { color: var(--orange); }
+.nav-links { display: flex; flex-wrap: wrap; gap: 14px; }
+.nav-links a {
+  font-family: 'Space Grotesk', sans-serif; font-size: 9px; text-transform: uppercase;
+  letter-spacing: 0.1em; color: var(--ink); text-decoration: none; opacity: 0.7;
+}
+.nav-links a:hover { opacity: 1; }
+.container { max-width: 1200px; margin: 0 auto; padding: 0 24px; }
+.section { padding: 88px 0 64px; border-top: 1px solid var(--ink-faint); }
+.hero { padding-top: 88px; border-top: none; }
+.hero-title {
+  font-family: 'Space Grotesk', sans-serif; font-size: clamp(36px, 7vw, 88px);
+  font-weight: 700; line-height: 0.95; letter-spacing: -0.03em; margin: 0 0 12px;
+}
+.lane-tag {
+  font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 0.12em;
+  text-transform: uppercase; color: var(--ink-soft); margin-bottom: 8px;
+}
+.doc-card {
+  background: var(--paper-white); border: 1px solid var(--ink);
+  padding: 32px 36px; margin-top: 24px;
+}
+.doc-card h2 {
+  font-family: 'Space Grotesk', sans-serif; font-size: clamp(28px, 4vw, 44px);
+  font-weight: 500; margin: 0 0 20px; letter-spacing: -0.02em;
+}
+.doc-card h3 {
+  font-family: 'Space Grotesk', sans-serif; font-size: 20px; font-weight: 500;
+  margin: 32px 0 12px; padding-top: 8px; border-top: 1px solid var(--ink-trace);
+}
+.doc-card h3:first-of-type { border-top: none; margin-top: 0; }
+.meta-table { width: auto; border-collapse: collapse; margin-bottom: 20px; font-size: 15px; }
+.meta-table td { padding: 4px 16px 4px 0; vertical-align: top; }
+.meta-table td:first-child {
+  font-family: 'Space Grotesk', sans-serif; font-size: 11px; text-transform: uppercase;
+  letter-spacing: 0.08em; color: var(--ink-soft); white-space: nowrap;
+}
+blockquote.doc-note {
+  margin: 16px 0; padding: 14px 18px; border-left: 3px solid var(--ink-faint);
+  background: var(--paper-warm); font-style: italic; font-size: 15px; color: var(--ink-2);
+}
+ul.doc-list { margin: 8px 0 16px; padding-left: 1.25em; }
+.data-table { width: 100%; border-collapse: collapse; font-size: 14px; margin: 12px 0 20px; }
+.data-table th, .data-table td { padding: 10px 12px; border: 1px solid var(--ink-trace); text-align: left; vertical-align: top; }
+.data-table th {
+  font-family: 'Space Grotesk', sans-serif; font-size: 9px; text-transform: uppercase;
+  letter-spacing: 0.08em; background: var(--paper-warm);
+}
+.canvas-frame { background: var(--paper-white); border: 1px solid var(--ink); margin: 20px 0; }
+.viz-toolbar { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; margin: 12px 0; }
+.btn {
+  font-family: 'Space Grotesk', sans-serif; font-size: 10px; text-transform: uppercase;
+  letter-spacing: 0.1em; padding: 8px 14px; border: 1px solid var(--ink); background: transparent; cursor: pointer;
+}
+.btn:hover { background: var(--ink); color: var(--paper); }
+.btn.orange { border-color: var(--orange); color: var(--orange); }
+.btn.orange:hover { background: var(--orange); color: var(--paper-white); }
+#kr-canvas { width: 100%; height: 200px; display: block; }
+.hint-bar { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--ink-soft); margin-top: 8px; }
+footer {
+  padding: 40px 24px 64px; text-align: center; font-family: 'JetBrains Mono', monospace;
+  font-size: 11px; color: var(--ink-soft); border-top: 1px solid var(--ink-faint);
+}
+/* bundle.html also needs: #timeline-canvas, .format-compare, .flow-edge, .grep-out — see templates/bundle.html extra <style> */
+.flow-edge { fill: none; stroke: var(--ink); stroke-width: 2; }
+.node-box { cursor: pointer; }
+.particle { fill: var(--green); }
+</style>
+</head>
+<body>
+<header class="top-nav">
+  <div class="top-nav-inner">
+    <div class="brand"><span>◈</span> BRIEF</div>
+    <nav class="nav-links">
+      <a href="#overview">Overview</a>
+      <a href="#objective">Objective</a>
+      <a href="#key-results">KR</a>
+      <a href="#scope">Scope</a>
+      <a href="#decisions">Decisions</a>
+      <a href="#approach">Approach</a>
+      <a href="#architecture">Architecture</a>
+      <a href="#risks">Risks</a>
+      <a href="#doc-maintenance">Docs</a>
+    </nav>
+    <span class="mono" style="font-size:11px;color:var(--ink-soft);">Status: <!-- SLOT:status --></span>
+  </div>
+</header>
+<main>
+  <section id="overview" class="section hero"><div class="container"><p class="lane-tag">§0 Overview</p><h1 class="hero-title"><!-- SLOT:task-title --></h1><!-- SLOT:overview --></div></section>
+  <section id="objective" class="section"><div class="container doc-card"><h2>Objective</h2><!-- SLOT:objective --></div></section>
+  <section id="key-results" class="section"><div class="container doc-card"><h2>Key Results</h2><div class="canvas-frame"><canvas id="kr-canvas" aria-label="KR targets"></canvas></div><!-- SLOT:kr-table --></div></section>
+  <section id="scope" class="section"><div class="container doc-card"><h2>Scope</h2><!-- SLOT:scope --></div></section>
+  <section id="decisions" class="section"><div class="container doc-card"><h2>Key Decisions</h2><!-- SLOT:decisions --></div></section>
+  <section id="approach" class="section"><div class="container doc-card"><h2>Approach</h2><!-- SLOT:approach --></div></section>
+  <section id="architecture" class="section"><div class="container doc-card"><h2>Architecture</h2><div class="canvas-frame viz-panel"><!-- SLOT:architecture-svg --></div><!-- SLOT:layer-control-data --></div></section>
+  <section id="risks" class="section"><div class="container doc-card"><h2>Risks</h2><!-- SLOT:risks --></div></section>
+  <section id="doc-maintenance" class="section"><div class="container doc-card"><h2>Doc Maintenance</h2><!-- SLOT:doc-maintenance --></div></section>
+</main>
+<footer>Plan of record — <a href="./worklog.md">worklog.md</a> during work · <a href="./report.html">report.html</a> after</footer>
+<script><!-- SLOT:brief-interactive — min 2 widgets (kr-bars + flow-play or verify-sim) --></script>
+</body>
+</html>

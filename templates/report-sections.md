@@ -1,10 +1,13 @@
+> **v0.3:** This file is a **section checklist** for content inside `report.html` and embedded in `index.html`.
+> Do not write `report.md` to task folders. Output paths: `report.html` + `index.html`.
+
 # Report — {Task Title}
 
 | | |
 |---|---|
 | **Date** | {YYYY-MM-DD} |
 | **Author** | {name} |
-| **Brief** | [brief.md](./brief.md) |
+| **Brief** | [brief.html](./brief.html) |
 | **Worklog** | [worklog.md](./worklog.md) — or _none kept_ |
 | **Status** | Done / Partially done / Stopped |
 

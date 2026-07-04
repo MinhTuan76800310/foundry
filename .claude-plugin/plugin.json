@@ -1,9 +1,9 @@
 {
   "name": "doc-flow",
-  "description": "Brainstorm → brief → work → report documentation lifecycle: OKR framing, ADR-lite decisions, worklog-backed plan-vs-actual, layered reports, Mermaid visuals.",
-  "version": "0.2.0",
+  "description": "Brainstorm → brief (HTML) → work (worklog) → report (HTML + bundle): viz-first partner deliverables, OKR, plan-vs-actual.",
+  "version": "0.3.0",
   "author": {
     "name": "minhtuan958"
   },
-  "keywords": ["documentation", "okr", "mermaid", "brainstorm", "brief", "worklog", "report"]
+  "keywords": ["documentation", "okr", "html", "brainstorm", "brief", "worklog", "report"]
 }

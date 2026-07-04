@@ -1,0 +1,630 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SLOT:bundle-title — partner bundle (brief + worklog + report)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Newsreader:ital,wght@0,400;0,500;1,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --paper: #F5EEDC; --paper-warm: #EDE3C9; --paper-white: #FCF9EF;
+    --ink: #0B2545; --ink-2: #1A3A5C; --ink-soft: rgba(11,37,69,0.65);
+    --ink-faint: rgba(11,37,69,0.35); --ink-trace: rgba(11,37,69,0.12);
+    --orange: #D75C2A; --orange-soft: rgba(215,92,42,0.16); --orange-deep: #A8421A;
+    --green: #2A7553; --green-soft: rgba(42,117,83,0.16);
+    --grid-minor: rgba(11,37,69,0.075);
+  }
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body { margin: 0; background: var(--paper); color: var(--ink);
+    font-family: 'Newsreader', Georgia, serif; font-size: 17px; line-height: 1.55; }
+  .mono { font-family: 'JetBrains Mono', monospace; }
+  body::before {
+    content: ''; position: fixed; inset: 0;
+    background-image: linear-gradient(var(--grid-minor) 1px, transparent 1px),
+      linear-gradient(90deg, var(--grid-minor) 1px, transparent 1px);
+    background-size: 24px 24px; pointer-events: none; z-index: 0; opacity: 0.55;
+  }
+  main, header, footer { position: relative; z-index: 1; }
+  .top-nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    backdrop-filter: blur(10px); background: rgba(245,238,220,0.88);
+    border-bottom: 1px solid var(--ink-faint);
+  }
+  .top-nav-inner {
+    max-width: 1200px; margin: 0 auto; padding: 12px 24px;
+    display: flex; flex-wrap: wrap; gap: 12px 20px; align-items: center; justify-content: space-between;
+  }
+  .brand { font-family: 'Space Grotesk', sans-serif; font-weight: 700; font-size: 16px; }
+  .brand span { color: var(--orange); }
+  .nav-links { display: flex; flex-wrap: wrap; gap: 14px; }
+  .nav-links a {
+    font-family: 'Space Grotesk', sans-serif; font-size: 9px; text-transform: uppercase;
+    letter-spacing: 0.1em; color: var(--ink); text-decoration: none; opacity: 0.7;
+  }
+  .nav-links a:hover { opacity: 1; }
+  .container { max-width: 1200px; margin: 0 auto; padding: 0 24px; }
+  .section { padding: 88px 0 64px; border-top: 1px solid var(--ink-faint); }
+  .hero { padding-top: 88px; border-top: none; }
+  .hero-title {
+    font-family: 'Space Grotesk', sans-serif; font-size: clamp(36px, 7vw, 88px);
+    font-weight: 700; line-height: 0.95; letter-spacing: -0.03em; margin: 0 0 12px;
+  }
+  .lane-tag {
+    font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 0.12em;
+    text-transform: uppercase; color: var(--ink-soft); margin-bottom: 8px;
+  }
+  .lane-tag.report { color: var(--green); }
+  .lane-tag.brief { color: var(--ink-2); }
+  .lane-tag.work { color: var(--orange); }
+  .lane-tag.viz { color: var(--ink); }
+  .doc-card {
+    background: var(--paper-white); border: 1px solid var(--ink);
+    padding: 32px 36px; margin-top: 24px;
+  }
+  .doc-card h2 {
+    font-family: 'Space Grotesk', sans-serif; font-size: clamp(28px, 4vw, 44px);
+    font-weight: 500; margin: 0 0 20px; letter-spacing: -0.02em;
+  }
+  .doc-card h3 {
+    font-family: 'Space Grotesk', sans-serif; font-size: 20px; font-weight: 500;
+    margin: 32px 0 12px; padding-top: 8px; border-top: 1px solid var(--ink-trace);
+  }
+  .doc-card h3:first-of-type { border-top: none; margin-top: 0; }
+  .doc-card h4 { font-family: 'Space Grotesk', sans-serif; font-size: 14px; margin: 20px 0 8px; text-transform: uppercase; letter-spacing: 0.08em; color: var(--ink-soft); }
+  .meta-table { width: auto; border-collapse: collapse; margin-bottom: 20px; font-size: 15px; }
+  .meta-table td { padding: 4px 16px 4px 0; vertical-align: top; }
+  .meta-table td:first-child { font-family: 'Space Grotesk', sans-serif; font-size: 11px; text-transform: uppercase; letter-spacing: 0.08em; color: var(--ink-soft); white-space: nowrap; }
+  blockquote.doc-note {
+    margin: 16px 0; padding: 14px 18px; border-left: 3px solid var(--ink-faint);
+    background: var(--paper-warm); font-style: italic; font-size: 15px; color: var(--ink-2);
+  }
+  ul.doc-list { margin: 8px 0 16px; padding-left: 1.25em; }
+  ul.doc-list li { margin-bottom: 6px; }
+  .data-table { width: 100%; border-collapse: collapse; font-size: 14px; margin: 12px 0 20px; }
+  .data-table th, .data-table td { padding: 10px 12px; border: 1px solid var(--ink-trace); text-align: left; vertical-align: top; }
+  .data-table th {
+    font-family: 'Space Grotesk', sans-serif; font-size: 9px; text-transform: uppercase;
+    letter-spacing: 0.08em; background: var(--paper-warm);
+  }
+  .artifact-pre {
+    margin: 0; padding: 20px; background: var(--paper); border: 1px solid var(--orange);
+    font-size: 14px; line-height: 1.5;
+  }
+  .mermaid-wrap { margin: 20px 0; padding: 24px; background: var(--paper-white); border: 1px solid var(--ink-trace); overflow-x: auto; }
+  .mermaid-wrap svg { max-width: 100%; height: auto; }
+  .check { color: var(--green); }
+  .status-partial { font-family: 'Space Grotesk', sans-serif; font-size: 12px; text-transform: uppercase; letter-spacing: 0.1em; color: var(--orange); }
+  .canvas-frame { background: var(--paper-white); border: 1px solid var(--ink); margin: 20px 0; }
+  .viz-toolbar { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; margin: 12px 0; }
+  .btn {
+    font-family: 'Space Grotesk', sans-serif; font-size: 10px; text-transform: uppercase;
+    letter-spacing: 0.1em; padding: 8px 14px; border: 1px solid var(--ink); background: transparent; cursor: pointer;
+  }
+  .btn:hover { background: var(--ink); color: var(--paper); }
+  .btn.orange { border-color: var(--orange); color: var(--orange); }
+  .btn.orange:hover { background: var(--orange); color: var(--paper-white); }
+  #kr-canvas, #timeline-canvas { width: 100%; display: block; }
+  #kr-canvas { height: 200px; }
+  #timeline-canvas { height: 220px; }
+  .format-compare { display: grid; grid-template-columns: 1fr 1fr; border: 1px solid var(--ink); }
+  .format-pane { padding: 20px; }
+  .format-pane.planned { border-right: 1px solid var(--ink-trace); }
+  .format-pane pre { margin: 0; padding: 14px; background: var(--paper); border: 1px solid var(--ink-trace); font-size: 13px; }
+  .format-pane.actual pre { border-color: var(--orange); background: var(--orange-soft); }
+  .grep-out { margin-top: 12px; padding: 14px; font-size: 13px; border: 1px solid var(--orange); background: var(--orange-soft); color: var(--orange-deep); }
+  input[type="range"] { width: 100%; max-width: 400px; accent-color: var(--orange); }
+  .flow-edge { fill: none; stroke: #0B2545; stroke-width: 2; }
+  .flow-edge.deviation { stroke: var(--orange); stroke-dasharray: 8 6; animation: dash 1.2s linear infinite; }
+  @keyframes dash { to { stroke-dashoffset: -28; } }
+  .node-box { cursor: pointer; }
+  .particle { fill: var(--green); }
+  .readout-strip { display: grid; grid-template-columns: repeat(4,1fr); border: 1px solid var(--ink); border-top: none; font-size: 13px; }
+  .readout-strip > div { padding: 10px 14px; border-right: 1px solid var(--ink-trace); }
+  .readout-strip label { font-size: 9px; text-transform: uppercase; letter-spacing: 0.1em; color: var(--ink-soft); display: block; font-family: 'Space Grotesk', sans-serif; }
+  footer { padding: 40px 24px 64px; text-align: center; font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--ink-soft); border-top: 1px solid var(--ink-faint); }
+  @media (max-width: 700px) { .format-compare { grid-template-columns: 1fr; } .readout-strip { grid-template-columns: 1fr 1fr; } }
+</style>
+</head>
+<!-- doc-flow bundle template: replace embedded sections with task content; keep #viz script data in sync with tables -->
+<body>
+
+<header class="top-nav">
+  <div class="top-nav-inner">
+    <div class="brand"><span>◈</span> BUNDLE TEMPLATE</div>
+    <nav class="nav-links">
+      <a href="#report">Report</a>
+      <a href="#brief">Brief</a>
+      <a href="#worklog">Worklog</a>
+      <a href="#artifact">marker.txt</a>
+      <a href="#viz">Interactive</a>
+    </nav>
+    <span class="mono" style="font-size:11px;color:var(--ink-soft);">2026-07-04</span>
+  </div>
+</header>
+
+<main>
+  <section class="hero section">
+    <div class="container">
+      <p class="lane-tag">Complete working result — no external markdown required</p>
+      <h1 class="hero-title">Worklog deviation dogfood</h1>
+      <p>This <strong>one HTML file</strong> embeds the full text of <span class="mono">report.md</span> (pyramid §1–8), <span class="mono">brief.md</span> (§0–11), <span class="mono">worklog.md</span>, and <span class="mono">marker.txt</span>, plus interactive diagrams below.</p>
+      <table class="meta-table">
+        <tr><td>Task folder</td><td class="mono">docs/work/2026-07-04-worklog-verify/</td></tr>
+        <tr><td>Plugin</td><td>doc-flow v0.2 — brief frozen, worklog absorbs reality</td></tr>
+        <tr><td>Status</td><td><span class="status-partial">Partially done</span> (per report)</td></tr>
+      </table>
+    </div>
+  </section>
+
+  <!-- ========== REPORT.MD (FULL) ========== -->
+  <section id="report" class="section">
+    <div class="container">
+      <p class="lane-tag report">Source: report.md</p>
+      <div class="doc-card">
+        <h2>Report — Worklog deviation dogfood</h2>
+        <table class="meta-table">
+          <tr><td>Date</td><td>2026-07-04</td></tr>
+          <tr><td>Author</td><td>dogfood / Claude</td></tr>
+          <tr><td>Brief</td><td>brief.md (embedded § <a href="#brief">below</a>)</td></tr>
+          <tr><td>Worklog</td><td>worklog.md (embedded § <a href="#worklog">below</a>)</td></tr>
+          <tr><td>Status</td><td>Partially done</td></tr>
+        </table>
+        <blockquote class="doc-note">One layered document, conclusion first (pyramid): §1–§3 serve CTO and business readers standalone; §4+ adds engineering depth. Each section is modular — lift it into slides without rewriting.</blockquote>
+
+        <h3>1. Executive Summary — 30 seconds</h3>
+        <p><strong>Audience: CTO / business.</strong></p>
+        <p>The dogfood run proved the <strong>worklog captures deviations</strong> when implementation diverges from the approved brief: deviation was logged before the off-plan file write, and the deviation register (D1) matches the worklog. The deliberate format change means the <strong>delivery KR for the marker file content failed</strong>, while the <strong>process KR for logging deviations passed</strong>.</p>
+        <p><strong>Done:</strong></p>
+        <ul class="doc-list">
+          <li>Worklog created from template and kept append-only; brief untouched.</li>
+          <li>One <span class="mono">deviation</span> row recorded before continuing past Approach step 2.</li>
+          <li>Deviation register D1 filled (planned YAML vs actual JSON + reason).</li>
+        </ul>
+        <p><strong>Not done / next:</strong></p>
+        <ul class="doc-list">
+          <li>KR1 not met: <span class="mono">marker.txt</span> does not contain <span class="mono">PLANNED_FORMAT=yaml</span>.</li>
+          <li>Run the same flow via real <span class="mono">/doc-flow:work</span> in a user session (no scripted agent).</li>
+          <li>Optional: add project-level reminder in <span class="mono">CLAUDE.md</span> to enforce worklog on drift.</li>
+        </ul>
+        <p><strong>Decision needed:</strong> —</p>
+        <blockquote class="doc-note">Only verifiable facts — nothing the scoreboard below cannot back up.</blockquote>
+
+        <h3>2. Business Impact</h3>
+        <p><strong>Audience: business.</strong></p>
+        <p>For teams presenting work to German partners, the important outcome is <strong>traceability</strong>: what was agreed in the brief stays visible, and changes are recorded with reasons instead of silently rewriting the plan. This exercise did not change product behavior; it validated that the documentation lifecycle can show honest plan-vs-actual, which reduces review friction and trust risk when KRs are scored against evidence.</p>
+
+        <h3>3. Key Results — Scoreboard</h3>
+        <table class="data-table">
+          <thead><tr><th>#</th><th>Key Result</th><th>Target</th><th>Actual</th><th>Score</th><th>Evidence</th></tr></thead>
+          <tbody>
+            <tr>
+              <td>KR1</td>
+              <td>Marker file exists with planned content</td>
+              <td class="mono">PLANNED_FORMAT=yaml</td>
+              <td class="mono">ACTUAL_FORMAT=json</td>
+              <td>❌</td>
+              <td class="mono">grep PLANNED_FORMAT=yaml marker.txt → exit 1</td>
+            </tr>
+            <tr>
+              <td>KR2</td>
+              <td>Worklog records ≥1 deviation before continuing past step 2</td>
+              <td>≥1 deviation row + D1 in register</td>
+              <td>1 deviation row (10:01) before step-2 write (10:02); D1 present</td>
+              <td>✅</td>
+              <td>worklog.md log table + deviation register D1</td>
+            </tr>
+          </tbody>
+        </table>
+        <blockquote class="doc-note">Score exactly the KRs from the brief. Unverifiable → <span class="mono">unverified</span>, never ✅.</blockquote>
+
+        <h3>4. Plan vs. Actual</h3>
+        <p><strong>Audience: engineering (from here down).</strong></p>
+        <table class="data-table">
+          <thead><tr><th>Planned step (from brief)</th><th>What actually happened</th><th>Deviation reason</th></tr></thead>
+          <tbody>
+            <tr><td>1. Create worklog.md from template if missing</td><td>worklog.md created from plugin template</td><td>—</td></tr>
+            <tr><td>2. Write marker.txt as single YAML line PLANNED_FORMAT=yaml</td><td class="mono">ACTUAL_FORMAT=json + {"format":"json"}</td><td>Worklog D1: fictional downstream consumer would break on YAML; JSON chosen instead (logged at 10:01 before write)</td></tr>
+            <tr><td>3. Append step row for completion</td><td>Completion and KR verification rows appended</td><td>—</td></tr>
+          </tbody>
+        </table>
+        <p><em>Source: worklog deviation register when available; otherwise git history + conversation. Deviations are information, not failures.</em></p>
+
+        <h3>5. What Changed</h3>
+        <ul class="doc-list">
+          <li><span class="mono">docs/work/2026-07-04-worklog-verify/brief.md</span>: created (Approved dogfood brief)</li>
+          <li><span class="mono">docs/work/2026-07-04-worklog-verify/worklog.md</span>: created; deviation + steps logged</li>
+          <li><span class="mono">docs/work/2026-07-04-worklog-verify/marker.txt</span>: created (off-plan JSON content)</li>
+          <li><span class="mono">docs/work/2026-07-04-worklog-verify/report.md</span>: report (this content); <span class="mono">index.html</span>: this bundle</li>
+        </ul>
+
+        <h3>6. Final Architecture &amp; Diagrams</h3>
+        <p><em>Brief had no architecture diagrams. Dogfood flow (actual):</em></p>
+        <div class="mermaid-wrap">
+          <svg viewBox="0 0 520 80" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="flowchart LR brief worklog marker report">
+            <defs><marker id="m-arr" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0,0 L8,4 L0,8 Z" fill="#0B2545"/></marker></defs>
+            <rect x="8" y="22" width="88" height="36" fill="#FCF9EF" stroke="#0B2545"/><text x="52" y="45" text-anchor="middle" font-family="Space Grotesk,sans-serif" font-size="12" font-weight="600">brief.md</text>
+            <text x="52" y="58" text-anchor="middle" font-family="JetBrains Mono" font-size="9" fill="#2A7553">Approved</text>
+            <line x1="96" y1="40" x2="118" y2="40" stroke="#D75C2A" stroke-width="2" marker-end="url(#m-arr)"/>
+            <rect x="118" y="22" width="100" height="36" fill="#FCF9EF" stroke="#D75C2A" stroke-width="2"/><text x="168" y="45" text-anchor="middle" font-family="Space Grotesk,sans-serif" font-size="12" font-weight="600">worklog.md</text>
+            <line x1="218" y1="40" x2="240" y2="40" stroke="#0B2545" stroke-width="2" marker-end="url(#m-arr)"/>
+            <rect x="240" y="22" width="88" height="36" fill="#FCF9EF" stroke="#D75C2A" stroke-width="2"/><text x="284" y="45" text-anchor="middle" font-family="Space Grotesk,sans-serif" font-size="12" font-weight="600">marker.txt</text>
+            <path d="M 168 58 Q 168 72 400 72 L 400 58" fill="none" stroke="#0B2545" stroke-width="1.5" marker-end="url(#m-arr)"/>
+            <rect x="412" y="22" width="100" height="36" fill="#FCF9EF" stroke="#0B2545"/><text x="462" y="45" text-anchor="middle" font-family="Space Grotesk,sans-serif" font-size="12" font-weight="600">report.md</text>
+            <text x="168" y="14" font-family="JetBrains Mono" font-size="9" fill="#D75C2A">deviation D1 before write</text>
+          </svg>
+        </div>
+
+        <h3>7. Learnings &amp; Follow-ups</h3>
+        <ul class="doc-list">
+          <li><strong>Learning:</strong> Prompt-level <span class="mono">/doc-flow:work</span> rules are sufficient for an agent <strong>when the scenario forces a deviation</strong>; there is still no automatic enforcement if the user codes without invoking work.</li>
+          <li><strong>Follow-up:</strong> Dogfood one real task using only <span class="mono">/doc-flow:work</span> + <span class="mono">/doc-flow:report</span> (owner: user, when convenient).</li>
+        </ul>
+
+        <h3>8. Docs Updated</h3>
+        <p><em>Doc Maintenance list from the brief — prove the docs stayed alive:</em></p>
+        <ul class="doc-list">
+          <li><span class="check">✓</span> Long-lived docs: none listed in brief — not needed because scope was isolated to <span class="mono">docs/work/2026-07-04-worklog-verify/</span></li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== BRIEF.MD (FULL) ========== -->
+  <section id="brief" class="section">
+    <div class="container">
+      <p class="lane-tag brief">Source: brief.md — Status: Approved</p>
+      <div class="doc-card">
+        <h2>Brief — Worklog deviation dogfood</h2>
+        <table class="meta-table">
+          <tr><td>Date</td><td>2026-07-04</td></tr>
+          <tr><td>Author</td><td>dogfood</td></tr>
+          <tr><td>Status</td><td><strong>Approved</strong></td></tr>
+          <tr><td>Brainstorm</td><td><em>none</em></td></tr>
+          <tr><td>Worklog</td><td><a href="#worklog">worklog.md</a> (below)</td></tr>
+          <tr><td>Report</td><td><a href="#report">report.md</a> (above)</td></tr>
+        </table>
+
+        <h3>0. Overview — map of the forest</h3>
+        <p>Verify whether <span class="mono">/doc-flow:work</span> actually appends deviations to <span class="mono">worklog.md</span> instead of silently drifting from the brief. Tiny change only in this task folder.</p>
+
+        <h3>1. Objective</h3>
+        <p>Prove the worklog mechanism captures plan-vs-actual when implementation diverges.</p>
+        <p><strong>Context:</strong> Plugin v0.2 claims brief is frozen and worklog absorbs reality; this task exercises that.</p>
+
+        <h3>2. Key Results</h3>
+        <table class="data-table">
+          <thead><tr><th>#</th><th>Key Result (measurable outcome)</th><th>Target</th><th>Verification</th></tr></thead>
+          <tbody>
+            <tr><td>KR1</td><td>Marker file exists with planned content</td><td class="mono">marker.txt</td> contains exactly <span class="mono">PLANNED_FORMAT=yaml</span></td><td class="mono">grep PLANNED_FORMAT=yaml docs/work/2026-07-04-worklog-verify/marker.txt</td></tr>
+            <tr><td>KR2</td><td>Worklog records at least one deviation before continuing past step 2</td><td>≥1 <span class="mono">deviation</span> row + D1 in register</td><td class="mono">grep -c deviation docs/work/2026-07-04-worklog-verify/worklog.md</td></tr>
+          </tbody>
+        </table>
+
+        <h3>3. Scope</h3>
+        <p><strong>In scope:</strong></p>
+        <ul class="doc-list"><li>Files under <span class="mono">docs/work/2026-07-04-worklog-verify/</span> only</li></ul>
+        <p><strong>Out of scope:</strong></p>
+        <ul class="doc-list">
+          <li>Changing plugin commands/templates</li>
+          <li>Commits unless user asks</li>
+        </ul>
+
+        <h3>4. Key Decisions (ADR-lite)</h3>
+        <table class="data-table">
+          <thead><tr><th>#</th><th>Decision</th><th>Options considered</th><th>Chosen because</th></tr></thead>
+          <tbody>
+            <tr><td>D1</td><td>Marker format</td><td>YAML line vs JSON</td><td>YAML per brief step 2</td></tr>
+          </tbody>
+        </table>
+
+        <h3>5. Approach</h3>
+        <ol class="doc-list" style="list-style:decimal;">
+          <li>Create <span class="mono">worklog.md</span> from plugin template if missing — expected outcome: empty log ready</li>
+          <li>Write <span class="mono">marker.txt</span> as a single YAML line <span class="mono">PLANNED_FORMAT=yaml</span> — expected outcome: KR1 met</li>
+          <li>Append a <span class="mono">step</span> row for completion — expected outcome: log shows full run</li>
+        </ol>
+
+        <h3>6. Architecture</h3>
+        <p><em>Not relevant: no system architecture change</em></p>
+        <h3>7. Layer View</h3>
+        <p><em>Not relevant: documentation-only dogfood</em></p>
+        <h3>8. Control Flow</h3>
+        <p><em>Not relevant: trivial file write</em></p>
+        <h3>9. Data Flow</h3>
+        <p><em>Not relevant: no data movement</em></p>
+
+        <h3>10. Risks &amp; Open Questions</h3>
+        <table class="data-table">
+          <thead><tr><th>Risk / Question</th><th>Impact</th><th>Mitigation / Owner</th></tr></thead>
+          <tbody>
+            <tr><td>Agent ignores worklog</td><td>High</td><td>This task's KR2</td></tr>
+          </tbody>
+        </table>
+
+        <h3>11. Doc Maintenance</h3>
+        <ul class="doc-list">
+          <li><strong>During work:</strong> deviations → worklog.md</li>
+          <li><strong>Long-lived docs affected:</strong> none</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== WORKLOG.MD (FULL) ========== -->
+  <section id="worklog" class="section">
+    <div class="container">
+      <p class="lane-tag work">Source: worklog.md</p>
+      <div class="doc-card">
+        <h2>Worklog — Worklog deviation dogfood</h2>
+        <table class="meta-table">
+          <tr><td>Brief</td><td><a href="#brief">brief.md</a> — plan of record</td></tr>
+          <tr><td>Report</td><td><a href="#report">report.md</a> — created after completion</td></tr>
+        </table>
+        <blockquote class="doc-note">Append-only log kept DURING implementation. One line per event, newest last. The brief is never edited after approval — deviations live here, and the report reconciles the two. Honest deviations are information, not failures.</blockquote>
+
+        <h3>Log</h3>
+        <table class="data-table">
+          <thead><tr><th>When</th><th>Type</th><th>Entry</th><th>Impact on brief</th></tr></thead>
+          <tbody>
+            <tr><td>2026-07-04 10:00</td><td>step</td><td>Approach 1: Created worklog.md from plugin template</td><td>—</td></tr>
+            <tr><td>2026-07-04 10:01</td><td><strong>deviation</strong></td><td>Step 2: will use JSON in marker.txt instead of YAML line (fictional consumer break)</td><td>Approach §5 step 2; KR1; Key Decisions D1</td></tr>
+            <tr><td>2026-07-04 10:02</td><td>step</td><td>Approach 2: Wrote marker.txt with ACTUAL_FORMAT=json (deviated from planned YAML)</td><td>KR1 affected — see verification</td></tr>
+            <tr><td>2026-07-04 10:02</td><td>step</td><td>KR1 verify: grep PLANNED_FORMAT=yaml marker.txt → exit 1 (no match)</td><td>KR1 not met (expected given deviation)</td></tr>
+            <tr><td>2026-07-04 10:03</td><td>step</td><td>KR2 verify: worklog has ≥1 deviation row and D1 in register</td><td>KR2 met</td></tr>
+            <tr><td>2026-07-04 10:03</td><td>step</td><td>Approach 3: Completion step row logged</td><td>—</td></tr>
+          </tbody>
+        </table>
+
+        <h3>Deviation register</h3>
+        <p><em>Filled from <span class="mono">deviation</span> rows above — the report's Plan-vs-Actual reads this.</em></p>
+        <table class="data-table">
+          <thead><tr><th>#</th><th>Planned (brief section)</th><th>Actual</th><th>Why</th></tr></thead>
+          <tbody>
+            <tr>
+              <td>D1</td>
+              <td>Approach step 2: single YAML line <span class="mono">PLANNED_FORMAT=yaml</span> (Key Decisions D1)</td>
+              <td class="mono">marker.txt</td> contains <span class="mono">ACTUAL_FORMAT=json</span> plus JSON object line</td>
+              <td>Discovered YAML would break a fictional downstream consumer; JSON chosen instead</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== ARTIFACT ========== -->
+  <section id="artifact" class="section">
+    <div class="container">
+      <p class="lane-tag work">Source: marker.txt (delivery artifact)</p>
+      <div class="doc-card">
+        <h2>marker.txt — on disk</h2>
+        <pre class="artifact-pre mono">ACTUAL_FORMAT=json
+{"format":"json"}</pre>
+        <p style="margin-top:16px;font-size:15px;color:var(--ink-2);">Brief planned: single line <span class="mono">PLANNED_FORMAT=yaml</span>. Actual content drives KR1 ❌ in report §3.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== INTERACTIVE (enhances full content above) ========== -->
+  <section id="viz" class="section">
+    <div class="container">
+      <p class="lane-tag viz">Interactive layer — same facts, explorable</p>
+      <h2 style="font-family:'Space Grotesk',sans-serif;font-size:36px;margin:0 0 8px;">Visual &amp; dynamic views</h2>
+      <p style="margin-bottom:32px;color:var(--ink-2);">Use these after reading the embedded documents — play flow, scrub timeline, run simulated grep.</p>
+
+      <h3 style="font-family:'Space Grotesk',sans-serif;font-size:18px;margin:32px 0 12px;">Architecture (playable)</h3>
+      <div class="viz-toolbar">
+        <button type="button" class="btn orange" id="btn-play-flow">▶ Play run</button>
+        <button type="button" class="btn" id="btn-reset-flow">Reset</button>
+        <span id="flow-status" class="mono" style="font-size:12px;color:var(--ink-soft);">idle</span>
+      </div>
+      <div class="canvas-frame">
+        <svg viewBox="0 0 900 300" style="width:100%;display:block;">
+          <defs>
+            <marker id="arrow" markerWidth="8" markerHeight="8" refX="6" refY="4" orient="auto"><path d="M0,0 L8,4 L0,8 Z" fill="#0B2545"/></marker>
+            <marker id="arrow-o" markerWidth="8" markerHeight="8" refX="6" refY="4" orient="auto"><path d="M0,0 L8,4 L0,8 Z" fill="#D75C2A"/></marker>
+          </defs>
+          <path id="edge-bw" class="flow-edge deviation" marker-end="url(#arrow-o)" d="M 200 150 L 340 150"/>
+          <path id="edge-wm" class="flow-edge" marker-end="url(#arrow)" d="M 460 150 L 560 150"/>
+          <path id="edge-wr" class="flow-edge" marker-end="url(#arrow)" d="M 400 180 Q 450 250 700 180"/>
+          <circle id="particle" class="particle" r="0" cx="200" cy="150"/>
+          <g class="node-box" data-node="brief" transform="translate(80,110)"><rect width="120" height="80" fill="#FCF9EF" stroke="#0B2545"/><text x="60" y="36" text-anchor="middle" font-family="Space Grotesk" font-size="14" font-weight="600">brief.md</text><text x="60" y="58" text-anchor="middle" font-family="JetBrains Mono" font-size="11">Approved</text></g>
+          <g class="node-box" data-node="worklog" transform="translate(340,110)"><rect width="120" height="80" fill="#FCF9EF" stroke="#D75C2A" stroke-width="2"/><text x="60" y="36" text-anchor="middle" font-family="Space Grotesk" font-size="14" font-weight="600">worklog.md</text><text x="60" y="58" text-anchor="middle" font-family="JetBrains Mono" font-size="11" fill="#D75C2A">D1 @ 10:01</text></g>
+          <g class="node-box" data-node="marker" transform="translate(560,110)"><rect width="120" height="80" fill="#FCF9EF" stroke="#D75C2A" stroke-width="2"/><text x="60" y="36" text-anchor="middle" font-family="Space Grotesk" font-size="14" font-weight="600">marker.txt</text></g>
+          <g class="node-box" data-node="report" transform="translate(700,110)"><rect width="120" height="80" fill="#FCF9EF" stroke="#0B2545"/><text x="60" y="36" text-anchor="middle" font-family="Space Grotesk" font-size="14" font-weight="600">report.md</text></g>
+        </svg>
+      </div>
+      <div class="readout-strip">
+        <div><label>Selected</label><div class="mono" id="sel-node">—</div></div>
+        <div><label>Role</label><div id="sel-role" style="font-size:13px;">Click a node</div></div>
+        <div><label>KR</label><div id="sel-kr" style="font-size:13px;">—</div></div>
+        <div><label>Phase</label><div class="mono" id="sel-phase">—</div></div>
+      </div>
+
+      <h3 style="font-family:'Space Grotesk',sans-serif;font-size:18px;margin:40px 0 12px;">KR scoreboard (animated)</h3>
+      <div class="canvas-frame"><canvas id="kr-canvas"></canvas></div>
+
+      <h3 style="font-family:'Space Grotesk',sans-serif;font-size:18px;margin:40px 0 12px;">D1 format + grep (report §3 / brief step 2)</h3>
+      <input type="range" id="format-slider" min="0" max="100" value="100"/> <span class="mono" id="format-pct">100% actual</span>
+      <div class="format-compare" style="margin-top:12px;">
+        <div class="format-pane planned" id="pane-planned"><strong class="mono" style="font-size:11px;color:var(--green);">PLANNED</strong><pre class="mono">PLANNED_FORMAT=yaml</pre></div>
+        <div class="format-pane actual" id="pane-actual"><strong class="mono" style="font-size:11px;color:var(--orange);">ACTUAL</strong><pre class="mono">ACTUAL_FORMAT=json
+{"format":"json"}</pre></div>
+      </div>
+      <button type="button" class="btn orange" id="btn-grep" style="margin-top:12px;">Run KR1 grep</button>
+      <div class="grep-out" id="grep-out">$ grep PLANNED_FORMAT=yaml marker.txt — click Run</div>
+
+      <h3 style="font-family:'Space Grotesk',sans-serif;font-size:18px;margin:40px 0 12px;">Worklog timeline (full log table)</h3>
+      <div class="viz-toolbar">
+        <button type="button" class="btn orange" id="btn-play-time">▶ Play</button>
+        <button type="button" class="btn" id="btn-pause-time">Pause</button>
+      </div>
+      <input type="range" id="time-slider" min="0" max="5" step="1" value="0"/>
+      <div class="canvas-frame"><canvas id="timeline-canvas"></canvas></div>
+      <p id="time-caption" class="mono" style="font-size:14px;margin-top:12px;color:var(--ink-2);"></p>
+    </div>
+  </section>
+</main>
+
+<footer>
+  Self-contained bundle · replaces reading separate .md files for review · source paths preserved in section labels
+</footer>
+
+<script>
+(function () {
+  const NODE_META = {
+    brief: { role: 'Plan of record (frozen)', kr: 'Defines KR1/KR2 targets' },
+    worklog: { role: 'Append-only reality log', kr: 'KR2 evidence' },
+    marker: { role: 'Delivery artifact', kr: 'KR1 failed' },
+    report: { role: 'Pyramid reconciliation', kr: '§3 scoreboard' },
+  };
+  const LOG = [
+    { t: '10:00', type: 'step', cap: 'Created worklog.md from plugin template' },
+    { t: '10:01', type: 'deviation', cap: 'JSON in marker.txt instead of YAML (D1)' },
+    { t: '10:02', type: 'step', cap: 'Wrote marker.txt ACTUAL_FORMAT=json' },
+    { t: '10:02', type: 'step', cap: 'KR1 grep → exit 1' },
+    { t: '10:03', type: 'step', cap: 'KR2 verify → met' },
+    { t: '10:03', type: 'step', cap: 'Completion row' },
+  ];
+  const particle = document.getElementById('particle');
+  let flowAnim = null;
+  function animateAlong(pathId, duration, onDone) {
+    const path = document.getElementById(pathId);
+    const len = path.getTotalLength();
+    const start = performance.now();
+    particle.setAttribute('r', '7');
+    function frame(now) {
+      const u = Math.min(1, (now - start) / duration);
+      const pt = path.getPointAtLength(u * len);
+      particle.setAttribute('cx', pt.x);
+      particle.setAttribute('cy', pt.y);
+      if (u < 1) flowAnim = requestAnimationFrame(frame);
+      else { flowAnim = null; onDone && onDone(); }
+    }
+    if (flowAnim) cancelAnimationFrame(flowAnim);
+    flowAnim = requestAnimationFrame(frame);
+  }
+  document.getElementById('btn-play-flow').onclick = () => {
+    document.getElementById('flow-status').textContent = 'brief → worklog';
+    document.getElementById('sel-phase').textContent = '10:01';
+    animateAlong('edge-bw', 1400, () => {
+      document.getElementById('flow-status').textContent = '→ marker';
+      animateAlong('edge-wm', 1000, () => {
+        document.getElementById('flow-status').textContent = '→ report';
+        animateAlong('edge-wr', 1400, () => {
+          document.getElementById('flow-status').textContent = 'done';
+          document.getElementById('sel-phase').textContent = 'complete';
+        });
+      });
+    });
+  };
+  document.getElementById('btn-reset-flow').onclick = () => {
+    if (flowAnim) cancelAnimationFrame(flowAnim);
+    particle.setAttribute('r', '0');
+    particle.setAttribute('cx', '200');
+    particle.setAttribute('cy', '150');
+    document.getElementById('flow-status').textContent = 'idle';
+  };
+  document.querySelectorAll('.node-box').forEach((g) => {
+    g.onclick = () => {
+      const id = g.getAttribute('data-node');
+      const m = NODE_META[id];
+      document.getElementById('sel-node').textContent = id;
+      document.getElementById('sel-role').textContent = m.role;
+      document.getElementById('sel-kr').textContent = m.kr;
+    };
+  });
+
+  const krCanvas = document.getElementById('kr-canvas');
+  const krCtx = krCanvas.getContext('2d');
+  let krDone = false;
+  function drawKR(p) {
+    const dpr = devicePixelRatio || 1;
+    const rect = krCanvas.getBoundingClientRect();
+    krCanvas.width = rect.width * dpr;
+    krCanvas.height = 200 * dpr;
+    krCtx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    const w = rect.width, barH = 32, gap = 40, x0 = 20, maxW = w - 40;
+    krCtx.clearRect(0, 0, w, 200);
+    [{ l: 'KR1 delivery', a: 0, c: '#D75C2A' }, { l: 'KR2 process', a: 1, c: '#2A7553' }].forEach((b, i) => {
+      const y = 36 + i * (barH + gap);
+      krCtx.fillStyle = 'rgba(11,37,69,0.08)';
+      krCtx.fillRect(x0, y, maxW, barH);
+      krCtx.fillStyle = b.c;
+      krCtx.fillRect(x0, y, maxW * b.a * p, barH);
+      krCtx.strokeStyle = '#0B2545';
+      krCtx.strokeRect(x0, y, maxW, barH);
+      krCtx.fillStyle = '#0B2545';
+      krCtx.font = '600 12px Space Grotesk';
+      krCtx.fillText(b.l, x0, y - 6);
+    });
+  }
+  new IntersectionObserver((e) => {
+    if (!e[0].isIntersecting || krDone) return;
+    krDone = true;
+    let p = 0;
+    (function tick() { p = Math.min(1, p + 0.04); drawKR(p); if (p < 1) requestAnimationFrame(tick); })();
+  }, { threshold: 0.3 }).observe(krCanvas);
+  window.addEventListener('resize', () => drawKR(krDone ? 1 : 0));
+  drawKR(0);
+
+  const slider = document.getElementById('format-slider');
+  slider.oninput = () => {
+    const v = +slider.value;
+    document.getElementById('format-pct').textContent = v + '% actual';
+    document.getElementById('pane-planned').style.opacity = 1 - v / 100;
+  };
+  document.getElementById('btn-grep').onclick = () => {
+    document.getElementById('grep-out').innerHTML = '$ grep PLANNED_FORMAT=yaml marker.txt<br>→ <strong>exit 1</strong> (no match) — KR1 ❌ per report §3';
+  };
+
+  const timeCanvas = document.getElementById('timeline-canvas');
+  const tCtx = timeCanvas.getContext('2d');
+  const timeSlider = document.getElementById('time-slider');
+  const timeCap = document.getElementById('time-caption');
+  let timePlay = null;
+  function drawTimeline(idx) {
+    const dpr = devicePixelRatio || 1;
+    const rect = timeCanvas.getBoundingClientRect();
+    timeCanvas.width = rect.width * dpr;
+    timeCanvas.height = 220 * dpr;
+    tCtx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    const w = rect.width, h = 220, y = h / 2, x1 = 36, x2 = w - 36;
+    tCtx.clearRect(0, 0, w, h);
+    tCtx.strokeStyle = '#0B2545';
+    tCtx.lineWidth = 2;
+    tCtx.beginPath();
+    tCtx.moveTo(x1, y);
+    tCtx.lineTo(x2, y);
+    tCtx.stroke();
+    LOG.forEach((e, i) => {
+      const x = x1 + (i / (LOG.length - 1)) * (x2 - x1);
+      tCtx.fillStyle = e.type === 'deviation' ? '#D75C2A' : (i <= idx ? '#2A7553' : 'rgba(11,37,69,0.2)');
+      tCtx.beginPath();
+      tCtx.arc(x, y, e.type === 'deviation' ? 12 : 8, 0, Math.PI * 2);
+      tCtx.fill();
+      tCtx.fillStyle = '#0B2545';
+      tCtx.font = '10px JetBrains Mono';
+      tCtx.textAlign = 'center';
+      tCtx.fillText(e.t, x, y - 22);
+    });
+    const e = LOG[idx];
+    timeCap.textContent = e.t + ' [' + e.type + '] ' + e.cap;
+    timeSlider.value = idx;
+  }
+  timeSlider.oninput = () => drawTimeline(+timeSlider.value);
+  document.getElementById('btn-play-time').onclick = () => {
+    let i = 0;
+    if (timePlay) clearInterval(timePlay);
+    timePlay = setInterval(() => { drawTimeline(i++); if (i >= LOG.length) clearInterval(timePlay); }, 850);
+  };
+  document.getElementById('btn-pause-time').onclick = () => clearInterval(timePlay);
+  drawTimeline(0);
+  window.addEventListener('resize', () => drawTimeline(+timeSlider.value));
+})();
+</script>
+</body>
+</html>

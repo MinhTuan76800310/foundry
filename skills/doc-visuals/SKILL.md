@@ -1,6 +1,6 @@
 ---
 name: doc-visuals
-description: Conventions for German-engineering-style documentation — Mermaid visuals (architecture, layer views, control flow, data flow), OKR writing rules, pyramid-principle report writing, and ADR-lite decision records. Use when writing brainstorms, briefs, worklogs, reports, or any technical doc that needs diagrams, Key Results, or an executive summary.
+description: Conventions for doc-flow documentation — Mermaid (reasoning), HTML viz-first deliverables (brief.html, report.html, index.html), OKR, pyramid reports, ADR-lite. Use for brainstorms, briefs, worklogs, reports, and doc-visuals HTML pattern catalog.
 ---
 
 # doc-visuals — diagram, OKR & report-writing conventions
@@ -128,3 +128,59 @@ flowchart LR
 - **Plan of record discipline.** After approval a brief is not edited;
   reality is appended to the worklog and reconciled in the report. Deviations
   are information, not failures.
+
+## HTML deliverables (v0.3)
+
+### Output paths (C3)
+
+| Command | Writes |
+|---------|--------|
+| brainstorm | `brainstorm.md` |
+| brief | `brief.html` |
+| work | `worklog.md` |
+| report | `report.html` + `index.html` |
+
+Do **not** write `brief.md` or `report.md` to task folders. Section checklists:
+`templates/brief-sections.md`, `templates/report-sections.md`.
+
+### Viz plan (required before HTML)
+
+Before writing any HTML, list 3–8 lines: **section → pattern ID(s) → why HTML
+beats markdown** for that section. No decorative charts.
+
+### Pattern catalog
+
+| ID | Use when | Capability |
+|----|----------|------------|
+| `lane-nav` | All partner HTML | Fixed nav, § anchors, pyramid order |
+| `kr-bars` | Brief §2 KR, report §3 | Canvas bars + evidence table |
+| `flow-play` | Brief §6–9, report §6 | SVG paths, play particle, dashed deviation |
+| `timeline` | Bundle / report PvA | Canvas + slider from worklog rows |
+| `split-morph` | Deviation / format drift | Two-pane + blend slider |
+| `verify-sim` | KR verification | Button shows command + exit code |
+| `adr-table` | Key decisions | Table + optional term popover |
+| `pyramid-exec` | Report §1–3 | Exec + scoreboard cards |
+| `embed-worklog` | `index.html` only | Full tables + #viz sharing same data |
+
+### Minimum interactivity
+
+- **`brief.html`:** ≥2 interactive/animated elements; if §6 or §8 relevant,
+  ≥1 interactive diagram (SVG).
+- **`report.html`:** KR viz + plan-vs-actual viz (timeline or highlighted table).
+- **`index.html`:** Full embed of brief + worklog + report + `#viz` (≥2
+  interactive views; shared data arrays with embedded tables).
+
+### Frozen brief
+
+After **Approved**, do not edit `brief.html`. Deviations → `worklog.md`;
+reconcile in `report.html` / `index.html`.
+
+### Templates & aesthetic
+
+Load `${CLAUDE_PLUGIN_ROOT}/templates/brief.html`, `report.html`, `bundle.html`.
+Inline CSS from `templates/html-shared.css`. **warm_dynamic** DNA (paper/navy,
+Space Grotesk + Newsreader + JetBrains Mono). Reference structure/viz only:
+`docs/work/2026-07-04-worklog-verify/index.html`.
+
+Use Mermaid while **reasoning** in `/brief`; in HTML output prefer **SVG/canvas**
+when play, scrub, or highlight adds clarity.

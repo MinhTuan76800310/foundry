@@ -3,23 +3,26 @@
 Claude Code plugin for a **brainstorm → brief → work → report** documentation
 lifecycle:
 
-- `/doc-flow:brainstorm [topic]` — think out loud before any plan exists:
-  capture raw ideas, options, constraints and sketches into `brainstorm.md`.
-- `/doc-flow:brief <task | note files>` — distill brainstorm/notes into a
-  reviewable pre-work brief: Overview ("map of the forest"), OKR framing,
-  ADR-lite Key Decisions, Mermaid visuals (architecture, layers, control
-  flow, data flow). Once approved it is the **plan of record**.
-- `/doc-flow:work [brief]` — execute the task following the brief step by
-  step; every deviation, decision and blocker is appended to `worklog.md` —
-  the brief itself stays untouched.
-- `/doc-flow:report [brief]` — one layered post-work report, conclusion
-  first: Executive Summary (CTO) → Business Impact → KR scoreboard →
-  plan-vs-actual (fed by the worklog) → final diagrams. Each section lifts
-  into slides unchanged.
+- `/doc-flow:brainstorm [topic]` — capture raw thinking into `brainstorm.md`.
+- `/doc-flow:brief <task | note files>` — pre-work plan of record as **`brief.html`**
+  (Overview, OKR, ADR-lite, **viz-first** interactive diagrams). Once approved,
+  the brief is frozen.
+- `/doc-flow:work [brief]` — execute following the brief; deviations append to
+  **`worklog.md`** only.
+- `/doc-flow:report [brief]` — **`report.html`** (pyramid CTO/business/engineering)
+  plus **`index.html`** (single-file partner bundle: full brief + worklog + report
+  + interactive #viz).
 
-Docs land in the project you run it from: `docs/work/<date>-<slug>/` — one
-folder per task holding `brainstorm.md`, `brief.md`, `worklog.md` and
-`report.md` side by side.
+Docs land in the project you run it from:
+
+```
+docs/work/<date>-<slug>/
+  brainstorm.md
+  worklog.md
+  brief.html       # plan of record
+  report.html
+  index.html       # partner bundle
+```
 
 ## Install
 
@@ -43,32 +46,35 @@ Restart Claude Code after installing.
 
 ```
 .claude-plugin/
-  plugin.json        # plugin manifest
-  marketplace.json   # lets this repo double as its own marketplace
+  plugin.json
+  marketplace.json
 commands/
-  brainstorm.md      # /doc-flow:brainstorm
-  brief.md           # /doc-flow:brief
-  work.md            # /doc-flow:work
-  report.md          # /doc-flow:report
+  brainstorm.md
+  brief.md           # → brief.html
+  work.md            # → worklog.md
+  report.md          # → report.html + index.html
 skills/
-  doc-visuals/       # Mermaid + OKR + report-writing conventions
+  doc-visuals/       # Mermaid + OKR + HTML viz catalog
 templates/
-  brainstorm.md      # raw-thinking skeleton
-  brief.md           # pre-work plan of record
-  worklog.md         # append-only deviation log kept during work
-  report.md          # layered post-work report
+  brainstorm.md
+  brief-sections.md  # checklist (not written to disk)
+  report-sections.md
+  brief.html
+  report.html
+  bundle.html
+  html-shared.css
+  worklog.md
 ```
 
 ## Customizing
 
-The document structure is expected to evolve — edit `templates/*.md` to
-change sections, and `skills/doc-visuals/SKILL.md` to change diagram and
-writing conventions. Commands only orchestrate; the templates are the
-contract.
+Edit `templates/brief.html` / `report.html` / `bundle.html` for layout;
+`skills/doc-visuals/SKILL.md` for diagram, OKR, and HTML viz rules.
+`brief-sections.md` / `report-sections.md` define required content headings.
 
 ## Roadmap
 
-- v0.1 — brief/report with OKR + 4 diagram types
-- v0.2 — full lifecycle: brainstorm & work commands, worklog-backed
-  plan-vs-actual, layered CTO/business/engineering report (current)
-- later — doc index page, team-specific formats, export to Confluence?
+- v0.1 — brief/report markdown + Mermaid
+- v0.2 — brainstorm, worklog, layered report
+- **v0.3 — HTML deliverables (brief.html, report.html, index.html), viz-first** (current)
+- later — doc index, Confluence export
