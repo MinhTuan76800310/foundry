@@ -1,5 +1,6 @@
-> **v0.3:** This file is a **section checklist** for content inside `report.html` and embedded in `index.html`.
-> Do not write `report.md` to task folders. Output paths: `report.html` + `index.html`.
+> **v0.3:** Section checklist for `report.html` / `index.html` — each heading is a **slot**.
+> Agent: read `docs/REPORT-INTAKE.md` — **ask until slots have evidence or Open:** before writing.
+> Sparse report OK; invented prose is not. Output: `report.html` + `index.html` (not `report.md`).
 
 # Report — {Task Title}
 

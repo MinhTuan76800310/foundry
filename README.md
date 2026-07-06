@@ -126,12 +126,12 @@ git commit -m "docs: <task> brief, worklog, report bundle"
 
 ### Project already had docs? (accuracy vs pretty HTML)
 
-Reports must be **investigated**, not templated: `/report` reads **brief + worklog + git**
-with **scope-first search** (README/root context, recent commits, expand when scope or
-log points outside paths). See **[docs/DATA-CONTRACT.md](docs/DATA-CONTRACT.md)**.
+Plugin behavior: **ask until report slots have evidence** (then write — sparse OK).
+See **[docs/REPORT-INTAKE.md](docs/REPORT-INTAKE.md)** (what to know / what to ask),
+**[docs/MENTAL-MODEL.md](docs/MENTAL-MODEL.md)** (incl. MCP `llm_wiki` as question consultant),
+**[docs/DATA-CONTRACT.md](docs/DATA-CONTRACT.md)** (sources + git investigation).
 
-Always pass task slug: `/doc-flow:report 2026-07-06-my-slug`. One-shot `/report` without
-`/work` still requires git + scope investigation — or facts will be wrong.
+Always pass task slug: `/doc-flow:report 2026-07-06-my-slug`.
 
 ### Troubleshooting
 

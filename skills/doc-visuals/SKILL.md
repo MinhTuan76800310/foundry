@@ -199,12 +199,12 @@ when play, scrub, or highlight adds clarity.
 
 **Do not** use AI for: exact KR %, grep output, file contents — use dynamic + tables.
 
-### Factual accuracy (investigate, then draw)
+### Factual accuracy (ask, then draw)
 
-Before `/report` HTML: read `docs/DATA-CONTRACT.md`. **Investigation first:**
-root README/docs for context; git log anchored on recent commits; search **brief scope**
-then expand to paths/commits referenced outside scope. Sources for KR = brief.html +
-worklog.md + verify commands — never ✅ without evidence. §5/§6 use git + files actually read.
+Before `/report` HTML: read `docs/MENTAL-MODEL.md`, `docs/REPORT-INTAKE.md`, `docs/DATA-CONTRACT.md`.
+**Slot audit → ask user (and optional `llm_wiki_ask` for question checklist) → verify KR → HTML.**
+Investigation: scope-first git + expand; KR from brief + verify only — never ✅ without evidence.
+Report may be **short**; gaps = **Open:** bullets, not filler. Viz `#viz` numbers must match §3 table.
 Embed in index must match the same folder's files — not another task or README alone.
 
 Spec: `docs/superpowers/specs/2026-07-06-doc-flow-index-ai-integration-report.md`

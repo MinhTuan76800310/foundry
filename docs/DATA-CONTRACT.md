@@ -1,6 +1,6 @@
 # doc-flow — Dữ liệu lấy từ đâu? (khi project đã có docs)
 
-Plugin **không** tự đọc toàn bộ repo rồi điền form. Agent **phải biết** cần thông tin gì, lấy ở đâu, và **đi kiếm** trước khi vẽ HTML. Thiếu bước đó → điền cho đủ section → đúng hình thức, **sai thông tin**.
+Plugin **không** tự đọc toàn bộ repo rồi điền form. Agent **slot audit → hỏi đến đủ → verify → HTML** (`docs/REPORT-INTAKE.md`, `docs/MENTAL-MODEL.md`). Thiếu bước đó → form đẹp, **sai thông tin**. MCP **llm_wiki** chỉ gợi ý *câu hỏi* — không thay brief/worklog/git/user.
 
 ---
 

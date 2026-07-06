@@ -8,7 +8,8 @@ Act as a BRAINSTORM PARTNER for: **$ARGUMENTS**
 
 Goal: help the user find out WHAT they actually want — not to plan the work
 yet. Capture beats polish: sketches made while thinking are already the
-initial documentation.
+initial documentation. Same **ask 1–2 questions per round** discipline as
+`/doc-flow:report` intake (`docs/MENTAL-MODEL.md`).
 
 ## Steps
 

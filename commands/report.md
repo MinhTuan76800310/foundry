@@ -1,62 +1,47 @@
 ---
-description: Create post-work report.html + index.html + viz-spec.json; investigate scope + evidence-first
-argument-hint: "**Required:** path or slug to docs/work/<date>-<slug> (do not rely on silent 'latest' if multiple tasks)"
+description: Post-work report — slot audit, ask until ready, then sparse quality HTML
+argument-hint: "**Required:** path or slug to docs/work/<date>-<slug>"
 ---
 
 Create a POST-WORK REPORT. Target: **$ARGUMENTS**
 
-You are not a layout generator. **Investigate** what the project and git say, then write HTML.
-Read `${CLAUDE_PLUGIN_ROOT}/docs/DATA-CONTRACT.md` (flow: what you need, where, how — including one-shot `/report`).
+You are an **evidence clerk**, not a form painter. **Ask until slots are filled or explicitly open** — then write; quality beats length.
 
-**Canonical partner file:** `index.html`. Facts = **brief.html + worklog.md + git/tests** after investigation — not guessing.
+Read (in order):
 
-## Investigation gate (BEFORE evidence block and BEFORE HTML)
+1. `${CLAUDE_PLUGIN_ROOT}/docs/MENTAL-MODEL.md`
+2. `${CLAUDE_PLUGIN_ROOT}/docs/REPORT-INTAKE.md` — slot → questions; **stop rule before HTML**
+3. `${CLAUDE_PLUGIN_ROOT}/docs/DATA-CONTRACT.md` — investigation + sources
+4. `${CLAUDE_PLUGIN_ROOT}/templates/report-sections.md` — headings only
 
-1. **Resolve task folder** — user MUST provide slug/path, or ask: `Which docs/work folder?`
-   Never pick `latest` silently if multiple `docs/work/*` exist.
+**MCP llm_wiki (mental model consultant):** When the slot audit has gaps and you are unsure *what to ask*, call `llm_wiki_ask` with the gap list and ask for a **question checklist** (not report prose). Wiki does **not** supply project facts — brief, worklog, git, and the **user** do.
 
-2. **Anchor time on recent work** — docs usually describe work just finished:
-   - `git log --oneline -30 -- .`
-   - `git log -1 --format='%H %ci %s'`
-   Use brief date for `--since` when brief exists; if no brief, use commits/messages in scope or ask user for base ref.
+## Phase A — Resolve & investigate (no HTML)
 
-3. **Project root context** (targeted, not whole-repo grep-for-fun):
-   - Read `README.md` (or root README) for what the project is about.
-   - Skim `docs/` entries **referenced by brief scope, commits, or $ARGUMENTS**.
-   - Do **not** paste README into KR scores; context informs §5/§6 only.
+1. Resolve `docs/work/<slug>/` — never silent `latest` if multiple folders.
+2. **DATA-CONTRACT investigation:** recent git anchor, root README/docs context, scope-first `git log`/`diff`, expand paths when scope or commits reference outside.
+3. Read `brief.html`, `worklog.md`, optional `brainstorm.md`.
 
-4. **Scope-first search, expand when referenced**:
-   - From `brief.html` § Scope (and path in $ARGUMENTS): list scope paths/modules.
-   - `git log --oneline --since="<since>" -- <scope-paths>`
-   - `git diff --stat` and scoped `git diff` for those paths.
-   - If scope **mentions paths outside** (other package, service, `../foo`): read and log those too.
-   - If **git log/diff touches files outside scope**: read/investigate those files/commits before writing What changed.
+## Phase B — Slot audit (chat, mandatory)
 
-5. **Task folder files**: read `brief.html`, `worklog.md`, optional `brainstorm.md`.
+4. Build a **slot table** mapped to `report-sections.md` (Status, §1–§8): each row = `filled | gap | source (file/commit/user)`.
+5. For **§3 KRs:** every KR needs Target, Actual, Score path, Evidence path — or mark `gap`.
+6. Post the table. **Do not write HTML yet** if critical gaps exist (no brief + no user KR intent, no verify run, unknown Done/Partial) unless user said *sparse + open questions*.
 
-6. **Post Investigation block in chat** (bullets): slug, scope paths, relevant commits, files read outside scope (why), gaps (no brief / no worklog).
+## Phase C — Ask until ready
 
-## Evidence gate (after investigation, still BEFORE HTML)
+7. **Ask the user** for gaps git cannot close (business impact, deviation *reason*, KR intent met, status Done/Partial, leadership decision). Use **AskUserQuestion** for up to 4 mutually blocking choices, or 1–2 short questions in chat (same rhythm as `/doc-flow:brainstorm`).
+8. Optional: `llm_wiki_ask` — "Given gaps: […], what should I ask vs infer from git?"
+9. Run **each** KR verification command from brief §2; update slot table with output.
+10. Re-check **stop rule** in REPORT-INTAKE. If still blocked, ask again — **do not fabricate**.
 
-7. **Capture evidence** (summaries in chat + Evidence column in report):
-   - `git log --oneline --since="<since>" -- <scope-or-.>`
-   - `git diff --stat` (scoped + whole-tree if commits span outside scope)
-   - **Each** KR verification command from brief §2 (exact command from brief table)
+## Phase D — Write (sparse allowed)
 
-8. **Score KRs** only from captured output. No ✅ without command/file evidence.
-   Unverifiable → `unverified` or ❌. Executive §1 must match §3 only.
+11. **Viz plan:** `#viz` from scored KRs + worklog facts only.
+12. `viz-spec.json`, `index.html`, `report.html` — **omit or shorten** sections with no evidence; use **Open:** bullets instead of filler.
+13. §1 Executive only claims backed by §3 table.
+14. AI images: if `.env` + `imageRequests`, run `generate-viz-images.mjs` with user-approved Bash.
 
-If brief missing or not Approved: flag **retroactive**; label reconstructed KRs. Missing worklog → §4 states git-only source.
+15. **Finish:** final slot table, evidence gaps, exec summary. State if report is intentionally sparse.
 
-## Write deliverables
-
-9. **Viz plan:** dynamic `#viz` required; `ai-image` only when story needs it.
-10. **`viz-spec.json`** — from **scored KRs + worklog events + investigation facts** (not invented).
-11. **`index.html`** — full embed from this folder's brief/worklog/report; tables and `#viz` arrays match same facts.
-12. **`report.html`** — pyramid; link to index.
-13. **AI images:** if `.env` + `imageRequests`, run:
-    `node "${CLAUDE_PLUGIN_ROOT}/scripts/generate-viz-images.mjs" --cwd "$(pwd)" "<task-folder>"`
-
-14. **Finish:** evidence gaps, KR table, exec summary. If investigation was thin, say so — pretty HTML without evidence is a **failure**.
-
-**Do not** fill KR / plan-vs-actual from legacy docs unless user explicitly names them as inputs for this slug.
+**Failure mode:** Pretty HTML with invented §2/§4/✅ — treat as bug; say so in chat.
