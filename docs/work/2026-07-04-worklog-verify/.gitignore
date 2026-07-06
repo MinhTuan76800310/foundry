@@ -1,0 +1,2 @@
+# Regenerate: node ../../scripts/generate-viz-images.mjs .
+generated-images/*.png

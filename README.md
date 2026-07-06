@@ -21,7 +21,8 @@ docs/work/<date>-<slug>/
   worklog.md
   brief.html       # plan of record
   report.html
-  index.html       # partner bundle
+  index.html       # partner bundle (canonical — dynamic #viz + optional #viz-story AI)
+  viz-spec.json    # charts, story, imageRequests → generate-viz-images.mjs
 ```
 
 ## Install
@@ -76,5 +77,6 @@ Edit `templates/brief.html` / `report.html` / `bundle.html` for layout;
 
 - v0.1 — brief/report markdown + Mermaid
 - v0.2 — brainstorm, worklog, layered report
-- **v0.3 — HTML deliverables (brief.html, report.html, index.html), viz-first** (current)
+- **v0.3 — HTML deliverables (brief.html, report.html, index.html), viz-first**
+- **v0.4 — index.html canonical + viz-spec + hybrid dynamic + optional AI images** (current direction)
 - later — doc index, Confluence export

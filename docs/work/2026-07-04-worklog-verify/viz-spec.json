@@ -1,0 +1,89 @@
+{
+  "version": "2",
+  "task": {
+    "title": "Worklog deviation dogfood",
+    "date": "2026-07-04",
+    "status": "Partially done"
+  },
+  "style": "hand-sketch",
+  "story": {
+    "id": "main-lifecycle",
+    "title": "Luồng tài liệu — đọc như sơ đồ người vẽ",
+    "caption": "Nhìn trên: A → B → C. Chọn một khối (ví dụ worklog) để đọc chú thích và xem sơ đồ chi tiết bên trong bên dưới.",
+    "nodes": [
+      {
+        "id": "A",
+        "label": "brief",
+        "short": "Kế hoạch đã duyệt",
+        "readable": "Đây là hợp đồng: không sửa sau khi Approved. Mọi thay đổi phải ghi ở worklog.",
+        "detail": null
+      },
+      {
+        "id": "B",
+        "label": "worklog",
+        "short": "Nhật ký thực tế",
+        "readable": "Khối B ghi lại thứ tự thời gian: bước làm, lệch kế hoạch (deviation), và đăng ký D1. Đây là nơi partner đọc được *tại sao* plan và thực tế khác nhau.",
+        "detail": {
+          "title": "Bên trong worklog (B1, B2, B3…)",
+          "caption": "Các mối quan hệ con — không nằm trên mũi tên A→C mà mở rộng khi bạn focus vào B.",
+          "children": [
+            { "id": "B1", "label": "Log table", "role": "Append-only từng dòng sự kiện" },
+            { "id": "B2", "label": "Deviation row", "role": "Ghi TRƯỚC khi ghi file lệch (10:01)" },
+            { "id": "B3", "label": "Register D1", "role": "Plan vs Actual trong report đọc từ đây" }
+          ],
+          "internalEdges": [
+            { "from": "B1", "to": "B2", "label": "deviation trước step 2" },
+            { "from": "B2", "to": "B3", "label": "điền register" },
+            { "from": "B1", "to": "B3", "label": "tổng hợp" }
+          ]
+        }
+      },
+      {
+        "id": "C",
+        "label": "report + index",
+        "short": "Báo cáo & bundle",
+        "readable": "C đối chiếu brief (A) với worklog (B): scoreboard KR, timeline, và HTML đầy đủ cho partner.",
+        "detail": {
+          "title": "Bên trong deliverable partner",
+          "caption": "Hai lớp: report pyramid và index nhúng full text + viz.",
+          "children": [
+            { "id": "C1", "label": "report.html", "role": "§1–8 pyramid" },
+            { "id": "C2", "label": "index.html", "role": "Embed brief + worklog + #viz" },
+            { "id": "C3", "label": "viz-spec.json", "role": "Máy đọc → đồ thị handwriting" }
+          ],
+          "internalEdges": [
+            { "from": "C3", "to": "C2", "label": "render" },
+            { "from": "C1", "to": "C2", "label": "cùng folder" }
+          ]
+        }
+      }
+    ],
+    "edges": [
+      { "from": "A", "to": "B", "label": "plan of record" },
+      { "from": "B", "to": "C", "label": "reconcile" }
+    ]
+  },
+  "charts": [
+    {
+      "id": "kr-scoreboard",
+      "type": "bar",
+      "title": "Key Results — Scoreboard",
+      "series": [
+        { "label": "KR1 delivery", "value": 0, "max": 100, "unit": "%", "intent": "fail" },
+        { "label": "KR2 process", "value": 100, "max": 100, "unit": "%", "intent": "pass" }
+      ]
+    },
+    {
+      "id": "worklog-timeline",
+      "type": "timeline",
+      "title": "Timeline (khớp khối B)",
+      "events": [
+        { "at": "10:00", "kind": "step", "label": "B1: tạo log" },
+        { "at": "10:01", "kind": "deviation", "label": "B2: D1 JSON not YAML" },
+        { "at": "10:02", "kind": "step", "label": "marker write" },
+        { "at": "10:03", "kind": "step", "label": "B3: KR verify" }
+      ]
+    }
+  ],
+  "diagrams": []
+}

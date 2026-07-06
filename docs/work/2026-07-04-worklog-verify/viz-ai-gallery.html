@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Worklog dogfood — AI sketch + story (vilao)</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600&family=Caveat:wght@700&family=Newsreader&family=Patrick+Hand&display=swap" rel="stylesheet">
+<style>
+  :root { --paper:#F5EEDC; --card:#FCF9EF; --ink:#0B2545; --orange:#D75C2A; --green:#2A7553; --grid:rgba(11,37,69,.06); }
+  body { margin:0; background:var(--paper); color:var(--ink); font-family:Newsreader,serif;
+    background-image:linear-gradient(var(--grid) 1px,transparent 1px); background-size:100% 24px; }
+  .top { position:sticky; top:0; z-index:10; background:rgba(245,238,220,.92); border-bottom:1px solid rgba(11,37,69,.2); padding:12px 24px;
+    font-family:'Space Grotesk',sans-serif; font-size:11px; text-transform:uppercase; letter-spacing:.1em; display:flex; gap:20px; flex-wrap:wrap; }
+  .top a { color:var(--ink); text-decoration:none; opacity:.75; }
+  .top a:hover { opacity:1; }
+  .wrap { max-width:920px; margin:0 auto; padding:32px 20px 80px; }
+  h1 { font-family:Caveat,cursive; font-size:2.8rem; margin:0 0 8px; }
+  .sub { font-family:'Patrick Hand',cursive; font-size:1.15rem; color:#64748b; margin-bottom:28px; }
+  .panel { background:var(--card); border:2px solid var(--ink); padding:20px; margin-bottom:32px; }
+  .panel h2 { font-family:Caveat,cursive; font-size:1.85rem; margin:0 0 6px; color:#2563eb; }
+  .panel .cap { font-family:'Patrick Hand',cursive; color:#64748b; margin-bottom:14px; }
+  .panel img { width:100%; height:auto; display:block; border:1px solid rgba(11,37,69,.25); background:var(--card); }
+  .readable { margin-top:14px; padding:14px 16px; border-left:4px solid var(--orange); background:#fff8e8; font-size:1.02rem; }
+  .tabs { display:flex; gap:8px; margin-bottom:16px; flex-wrap:wrap; }
+  .tabs button { font-family:'Patrick Hand',cursive; font-size:1rem; padding:8px 14px; border:2px solid var(--ink); background:var(--card); cursor:pointer; }
+  .tabs button.on { background:var(--ink); color:var(--paper); }
+  .fig { display:none; }
+  .fig.on { display:block; }
+  footer { text-align:center; font-size:12px; color:#64748b; padding:24px; font-family:'Space Grotesk',sans-serif; }
+</style>
+</head>
+<body>
+<nav class="top">
+  <span>◈ doc-flow · vilao + warm paper</span>
+  <a href="index.html">index bundle</a>
+  <a href="viz-rendered.html">Rough interactive</a>
+  <a href="viz-spec.json">viz-spec.json</a>
+</nav>
+<div class="wrap">
+  <h1>Worklog deviation dogfood</h1>
+  <p class="sub">Ảnh sinh từ <code>viz-spec</code> + prompt đồng điệu HTML (cream #F5EEDC, navy, orange/green). Folder: <code>generated-images/</code></p>
+
+  <section class="panel">
+    <h2>A → B → C — luồng chính (ảnh)</h2>
+    <p class="cap">brief (frozen) → worklog (deviation) → report + index</p>
+    <img src="generated-images/story-abc-flow.png" alt="Story flow A B C hand sketch" loading="lazy"/>
+    <div class="readable"><strong>A — brief:</strong> Kế hoạch Approved, không sửa. <strong>B — worklog:</strong> D1 @ 10:01 trước khi ghi marker JSON. <strong>C — report/index:</strong> đối chiếu KR.</div>
+  </section>
+
+  <section class="panel">
+    <h2>Khối B — chi tiết bên trong (ảnh)</h2>
+    <p class="cap">B1 Log → B2 Deviation → B3 Register — mở rộng phía dưới khi đọc story</p>
+    <img src="generated-images/block-B-worklog-detail.png" alt="Worklog B1 B2 B3 internal diagram" loading="lazy"/>
+    <div class="readable">Đúng case anh mô tả: trên là A→B→C; dưới là diagram/image giải thích <em>bên trong B</em> với B1, B2, B3 và chú thích.</div>
+  </section>
+
+  <section class="panel">
+    <h2>Key Results — scoreboard (ảnh)</h2>
+    <p class="cap">KR1 delivery ❌ · KR2 process ✅</p>
+    <div class="tabs">
+      <button type="button" class="on" data-fig="kr-img">Ảnh AI</button>
+      <button type="button" data-fig="kr-rough">+ Mở Rough chart</button>
+    </div>
+    <div id="kr-img" class="fig on">
+      <img src="generated-images/kr-scoreboard-sketch.png" alt="KR bar chart sketch" loading="lazy"/>
+    </div>
+    <div id="kr-rough" class="fig">
+      <p class="cap">Rough.js từ cùng spec (số liệu chính xác):</p>
+      <iframe src="viz-rendered.html" title="rough charts" style="width:100%;height:520px;border:1px solid var(--ink);background:var(--card);"></iframe>
+    </div>
+  </section>
+
+  <section class="panel">
+    <h2>Pipeline</h2>
+    <p class="cap"><code>viz-spec.json</code> → <code>node scripts/generate-viz-images.mjs</code> → <code>generated-images/*.png</code> → trang này</p>
+    <p style="font-size:.95rem">API key chỉ trong <code>.env</code> (gitignored). Prompt luôn kèm palette warm_dynamic.</p>
+  </section>
+</div>
+<footer>2026-07-04 · docs/work/2026-07-04-worklog-verify</footer>
+<script>
+document.querySelectorAll('.tabs button').forEach(btn => {
+  btn.onclick = () => {
+    document.querySelectorAll('.tabs button').forEach(b => b.classList.remove('on'));
+    document.querySelectorAll('.fig').forEach(f => f.classList.remove('on'));
+    btn.classList.add('on');
+    const id = btn.dataset.fig;
+    if (id) document.getElementById(id)?.classList.add('on');
+  };
+});
+</script>
+</body>
+</html>

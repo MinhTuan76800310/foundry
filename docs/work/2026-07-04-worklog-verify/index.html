@@ -125,6 +125,11 @@
   .readout-strip > div { padding: 10px 14px; border-right: 1px solid var(--ink-trace); }
   .readout-strip label { font-size: 9px; text-transform: uppercase; letter-spacing: 0.1em; color: var(--ink-soft); display: block; font-family: 'Space Grotesk', sans-serif; }
   footer { padding: 40px 24px 64px; text-align: center; font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--ink-soft); border-top: 1px solid var(--ink-faint); }
+  .ai-figure { margin: 28px 0; padding: 20px; background: var(--paper-white); border: 1px solid var(--ink); }
+  .ai-figure img { width: 100%; height: auto; display: block; border: 1px solid var(--ink-trace); }
+  .ai-figure .cap { font-family: 'Patrick Hand', cursive; font-size: 1rem; color: var(--ink-2); margin: 12px 0 0; }
+  .ai-figure figcaption { font-family: 'Newsreader', serif; font-size: 15px; color: var(--ink-2); margin-top: 12px; padding-left: 12px; border-left: 3px solid var(--orange); }
+  .hybrid-note { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--ink-soft); margin-bottom: 20px; }
   @media (max-width: 700px) { .format-compare { grid-template-columns: 1fr; } .readout-strip { grid-template-columns: 1fr 1fr; } }
 </style>
 </head>
@@ -139,6 +144,7 @@
       <a href="#worklog">Worklog</a>
       <a href="#artifact">marker.txt</a>
       <a href="#viz">Interactive</a>
+      <a href="#viz-story">Story</a>
     </nav>
     <span class="mono" style="font-size:11px;color:var(--ink-soft);">2026-07-04</span>
   </div>
@@ -464,6 +470,26 @@
       <input type="range" id="time-slider" min="0" max="5" step="1" value="0"/>
       <div class="canvas-frame"><canvas id="timeline-canvas"></canvas></div>
       <p id="time-caption" class="mono" style="font-size:14px;margin-top:12px;color:var(--ink-2);"></p>
+    </div>
+  </section>
+
+  <section id="viz-story" class="section">
+    <div class="container">
+      <p class="lane-tag viz">Human-readable story — AI sketch (Mermaid không đủ)</p>
+      <h2 style="font-family:'Space Grotesk',sans-serif;font-size:36px;margin:0 0 8px;">A → B → C + chi tiết khối B</h2>
+      <p class="hybrid-note">Dynamic charts ở <a href="#viz">#viz</a> giữ số liệu chính xác; ảnh bên dưới minh họa “đọc hiểu” cho partner.</p>
+      <figure class="ai-figure">
+        <img src="generated-images/story-abc-flow.png" alt="Flow brief worklog report" loading="lazy"/>
+        <figcaption><strong>A brief</strong> (frozen) → <strong>B worklog</strong> (deviation trước khi ghi file) → <strong>C report + index</strong> (đối chiếu KR).</figcaption>
+      </figure>
+      <figure class="ai-figure">
+        <img src="generated-images/block-B-worklog-detail.png" alt="Inside worklog B1 B2 B3" loading="lazy"/>
+        <figcaption><strong>Bên trong B:</strong> B1 log table → B2 deviation @ 10:01 → B3 register D1 (report §4 đọc từ đây).</figcaption>
+      </figure>
+      <figure class="ai-figure">
+        <img src="generated-images/kr-scoreboard-sketch.png" alt="KR scoreboard sketch" loading="lazy"/>
+        <figcaption>Minh họa KR — bảng evidence trong <a href="#report">#report §3</a> và canvas <a href="#viz">#viz</a> là source of truth.</figcaption>
+      </figure>
     </div>
   </section>
 </main>

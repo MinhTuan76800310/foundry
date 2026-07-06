@@ -184,3 +184,19 @@ Space Grotesk + Newsreader + JetBrains Mono). Reference structure/viz only:
 
 Use Mermaid while **reasoning** in `/brief`; in HTML output prefer **SVG/canvas**
 when play, scrub, or highlight adds clarity.
+
+### Hybrid: dynamic + AI images (v0.4)
+
+**Canonical bundle:** `index.html` per `docs/work/2026-07-04-worklog-verify/index.html`.
+
+| Layer | Where in index | Tool |
+|-------|----------------|------|
+| Dynamic (required) | `#viz` | canvas/SVG JS — KR, timeline, flow play, grep sim |
+| AI sketch (optional) | `#viz-story` | `generated-images/*.png` from `viz-spec.imageRequests` + `scripts/generate-viz-images.mjs` |
+| Text truth | `#report`, tables | Always — images illustrate only |
+
+**Use `ai-image` when:** nested block story (B1,B2,B3), partner-facing metaphor, architecture Mermaid cannot express readably.
+
+**Do not** use AI for: exact KR %, grep output, file contents — use dynamic + tables.
+
+Spec: `docs/superpowers/specs/2026-07-06-doc-flow-index-ai-integration-report.md`
