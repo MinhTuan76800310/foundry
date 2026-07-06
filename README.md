@@ -126,11 +126,12 @@ git commit -m "docs: <task> brief, worklog, report bundle"
 
 ### Project already had docs? (accuracy vs pretty HTML)
 
-Plugin fills reports from **`docs/work/<slug>/brief.html` + `worklog.md` + git** —
-not from random old docs. If you skipped `/brief` or `/work`, `/report` will look
-right but be **wrong**. See **[docs/DATA-CONTRACT.md](docs/DATA-CONTRACT.md)**.
+Reports must be **investigated**, not templated: `/report` reads **brief + worklog + git**
+with **scope-first search** (README/root context, recent commits, expand when scope or
+log points outside paths). See **[docs/DATA-CONTRACT.md](docs/DATA-CONTRACT.md)**.
 
-Always pass task slug to report: `/doc-flow:report 2026-07-06-my-slug`.
+Always pass task slug: `/doc-flow:report 2026-07-06-my-slug`. One-shot `/report` without
+`/work` still requires git + scope investigation — or facts will be wrong.
 
 ### Troubleshooting
 
