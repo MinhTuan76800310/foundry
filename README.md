@@ -126,9 +126,11 @@ git commit -m "docs: <task> brief, worklog, report bundle"
 
 ### Project already had docs? (accuracy vs pretty HTML)
 
-Plugin behavior: **ask until report slots have evidence** (then write — sparse OK).
-See **[docs/REPORT-INTAKE.md](docs/REPORT-INTAKE.md)** (what to know / what to ask),
-**[docs/MENTAL-MODEL.md](docs/MENTAL-MODEL.md)** (incl. MCP `llm_wiki` as question consultant),
+Plugin behavior: a **ReAct loop** (reason → act → observe → **gate**) asks until
+every report slot is evidence-backed or an explicit `Open:` — then writes (sparse OK).
+See **[docs/REACT-LOOP.md](docs/REACT-LOOP.md)** (the loop + gate + `intake-state.json`),
+**[docs/CONSULTANT.md](docs/CONSULTANT.md)** (optional how-to-think help: `llm_wiki` → other MCP → Claude; never for project facts),
+**[docs/REPORT-INTAKE.md](docs/REPORT-INTAKE.md)** (slot → questions),
 **[docs/DATA-CONTRACT.md](docs/DATA-CONTRACT.md)** (sources + git investigation).
 
 Always pass task slug: `/doc-flow:report 2026-07-06-my-slug`.
@@ -149,9 +151,15 @@ Always pass task slug: `/doc-flow:report 2026-07-06-my-slug`.
   marketplace.json
 commands/
   brainstorm.md
-  brief.md           # → brief.html
+  brief.md           # → brief.html (ReAct loop)
   work.md            # → worklog.md
-  report.md          # → report.html + index.html
+  report.md          # → report.html + index.html (ReAct loop)
+docs/
+  REACT-LOOP.md      # reason→act→observe→gate + intake-state.json
+  CONSULTANT.md      # how-to-think role, Tier 1→3 fallback, no project facts
+  REPORT-INTAKE.md   # slot → questions → stop rule
+  DATA-CONTRACT.md   # evidence sources + git investigation
+  MENTAL-MODEL.md    # plugin behavior overview
 skills/
   doc-visuals/       # Mermaid + OKR + HTML viz catalog
 templates/
