@@ -22,8 +22,17 @@ Also write `report.html` (pyramid-only nav) and **`viz-spec.json`**.
    - **ai-image** when: story A→B→C with nested detail (B1,B2,B3), partner metaphor, architecture too rich for Mermaid.
 5. **Write `viz-spec.json` v2+** with `story`, `charts`, `imageRequests[]` (id, file, slot, promptHint with warm_dynamic palette).
 6. **Write `index.html`** — full embed §1–8 + brief + worklog; **do not remove #viz JS**.
-   - If `imageRequests` exist: add `#viz-story` section with `<img src="generated-images/...">` + figcaption (paths relative); note user runs `node scripts/generate-viz-images.mjs`.
+   - If `imageRequests` exist: add `#viz-story` with `<img src="generated-images/...">` + figcaption; then step 8 generates PNGs if `.env` present.
 7. **Write `report.html`** — pyramid sections; link to index for full bundle.
-8. **Finish:** paths, KR table in chat, exec summary; remind optional image script.
+8. **AI images (automatic when `.env` exists):** If project root has `.env` with
+   `VILAO_API_KEY` and `viz-spec.json` has `imageRequests[]`, run:
+
+```bash
+node "${CLAUDE_PLUGIN_ROOT}/scripts/generate-viz-images.mjs" --cwd "$(pwd)" "<task-folder>"
+```
+
+   User approves Bash once. **No script copy** — plugin path only. If no `.env` or
+   no `imageRequests`, skip and tell user: add `.env` + `/doc-flow:generate-images` later.
+9. **Finish:** paths, KR table in chat, exec summary.
 
 **Do not** replace dynamic #viz with images only. Tables remain source of truth for KR.

@@ -74,23 +74,41 @@ Or open that folder in VS Code with Claude Code. All generated docs go here.
 | (optional) | `/doc-flow:brainstorm <topic>` | `docs/work/<date>-<slug>/brainstorm.md` |
 | 1 | `/doc-flow:brief <task title or paths to notes>` | `brief.html` — review → **Approved** |
 | 2 | `/doc-flow:work` or `/doc-flow:work <slug>` | `worklog.md` (brief.html not edited) |
-| 3 | `/doc-flow:report` | `report.html`, **`index.html`**, `viz-spec.json` |
+| 3 | `/doc-flow:report` | `report.html`, **`index.html`**, `viz-spec.json` (+ auto gen ảnh nếu có `.env`) |
+| (optional) | `/doc-flow:generate-images` | `generated-images/*.png` |
 
 **Primary deliverable for partners:** open `docs/work/.../index.html` in a browser
 (`file://` or static host). Reference layout:
 `docs/work/2026-07-04-worklog-verify/index.html` in this repo.
 
-### 4. Optional — AI sketch images (hybrid with dynamic #viz)
+### 4. AI sketch images — chỉ cần `.env` ở root repo app (không copy script)
 
-After `/report`, if `viz-spec.json` includes `imageRequests`:
+1. Trong **repo app** (không phải doc-flow), tạo `.env`:
 
-```bash
-# VILAO_API_KEY in .env at repo root (or pass env)
-node /path/to/doc-flow/scripts/generate-viz-images.mjs docs/work/<date>-<slug>
+```env
+VILAO_API_KEY=sk-...
 ```
 
-Regenerates `generated-images/*.png` and matches warm paper / navy style. Dynamic
-charts in `#viz` stay the source of truth for KR numbers and timelines.
+(Copy từ `.env.example` trong plugin repo.)
+
+2. Sau `/doc-flow:report`, Claude **tự chạy** script trong plugin (nếu có
+   `imageRequests` + `.env`) — anh approve Bash một lần.
+
+Hoặc chủ động:
+
+```text
+/doc-flow:generate-images
+```
+
+Hoặc tay:
+
+```bash
+node "$CLAUDE_PLUGIN_ROOT/scripts/generate-viz-images.mjs" --cwd "$(pwd)" docs/work/<date>-<slug>
+```
+
+(`$CLAUDE_PLUGIN_ROOT` chỉ có trong Claude khi plugin loaded; lệnh slash dùng path đó giúp anh.)
+
+PNG → `docs/work/.../generated-images/` → mở `index.html` **#viz-story**. **#viz** dynamic vẫn là số liệu chính xác.
 
 ### 5. Commit docs with the code
 
