@@ -124,12 +124,21 @@ git commit -m "docs: <task> brief, worklog, report bundle"
 | **Use plugin** | `cd <app-repo>` → slash commands → `docs/work/` under app-repo |
 | **Change plugin** | Edit `doc-flow/commands`, `templates`, `skills` → commit doc-flow → restart Claude |
 
+### Project already had docs? (accuracy vs pretty HTML)
+
+Plugin fills reports from **`docs/work/<slug>/brief.html` + `worklog.md` + git** —
+not from random old docs. If you skipped `/brief` or `/work`, `/report` will look
+right but be **wrong**. See **[docs/DATA-CONTRACT.md](docs/DATA-CONTRACT.md)**.
+
+Always pass task slug to report: `/doc-flow:report 2026-07-06-my-slug`.
+
 ### Troubleshooting
 
 - Commands missing: re-run `/plugin install doc-flow@doc-flow`, restart session.
 - Use full prefix: `/doc-flow:brief`, not `/brief`.
 - Legacy tasks with only `brief.md`: `/work` and `/report` still work; regenerate
   `brief.html` with `/doc-flow:brief`.
+- Report looks good but facts wrong: retro `worklog.md` + run KR verify commands; read DATA-CONTRACT.
 
 ## Structure
 

@@ -1,38 +1,40 @@
 ---
-description: Create post-work report.html + index.html (canonical bundle) + viz-spec.json; hybrid dynamic + optional AI images
-argument-hint: "[path to brief.html or task slug — omit to use the most recent brief]"
+description: Create post-work report.html + index.html + viz-spec.json; evidence-first (brief + worklog + git)
+argument-hint: "**Required:** path or slug to docs/work/<date>-<slug> (do not rely on silent 'latest' if multiple tasks)"
 ---
 
 Create a POST-WORK REPORT. Target: **$ARGUMENTS**
 
-**Canonical partner file:** `index.html` — same structure and style as
-`docs/work/2026-07-04-worklog-verify/index.html` (Space Grotesk + Newsreader,
-warm paper, full embed report/brief/worklog, **#viz dynamic**, optional **#viz-story** AI images).
+**Canonical partner file:** `index.html` (dogfood layout). Factual accuracy comes from
+**brief.html + worklog.md + git evidence** — not from old repo docs or guessing.
+Read `${CLAUDE_PLUGIN_ROOT}/docs/DATA-CONTRACT.md` when the project already had docs
+before doc-flow.
 
-Also write `report.html` (pyramid-only nav) and **`viz-spec.json`**.
+## Evidence gate (do this BEFORE writing HTML)
 
-## Steps
+1. **Resolve task folder explicitly** — user MUST provide slug/path, or you ask:
+   `Which docs/work folder?` If multiple `docs/work/*` exist, **never** pick latest silently.
+2. **Read in folder:** `brief.html`, `worklog.md` (if missing, state in report §4 source).
+3. **Run and capture** (paste summaries into chat, use in Evidence column):
+   - `git log --oneline --since="<brief date YYYY-MM-DD>" -- .`
+   - `git diff --stat` (and scoped diff for files in brief scope)
+   - **Each** KR verification command from brief §2 (exact command from brief table)
+4. **Score KRs** only from captured output. No ✅ without command/file evidence.
+   Unverifiable → `unverified` or ❌. Executive §1 must match §3 only.
 
-1. **Locate the brief** (`brief.html` preferred; legacy `brief.md` → suggest regen).
-2. **Load:** `templates/bundle.html` (canonical = dogfood index layout),
-   `templates/report.html`, `report-sections.md`, `doc-visuals` hybrid rules.
-3. **Read worklog** + git evidence; score KRs with evidence.
-4. **Viz plan** (required): per section tag `dynamic` | `mermaid` | `ai-image` | `table-only`.
-   - **Always** `#viz` dynamic: flow-play, kr-bars, timeline, split-morph/verify-sim when relevant.
-   - **ai-image** when: story A→B→C with nested detail (B1,B2,B3), partner metaphor, architecture too rich for Mermaid.
-5. **Write `viz-spec.json` v2+** with `story`, `charts`, `imageRequests[]` (id, file, slot, promptHint with warm_dynamic palette).
-6. **Write `index.html`** — full embed §1–8 + brief + worklog; **do not remove #viz JS**.
-   - If `imageRequests` exist: add `#viz-story` with `<img src="generated-images/...">` + figcaption; then step 8 generates PNGs if `.env` present.
-7. **Write `report.html`** — pyramid sections; link to index for full bundle.
-8. **AI images (automatic when `.env` exists):** If project root has `.env` with
-   `VILAO_API_KEY` and `viz-spec.json` has `imageRequests[]`, run:
+If brief is missing or not Approved: stop or flag **retroactive** and label all KRs
+reconstructed.
 
-```bash
-node "${CLAUDE_PLUGIN_ROOT}/scripts/generate-viz-images.mjs" --cwd "$(pwd)" "<task-folder>"
-```
+## Write deliverables
 
-   User approves Bash once. **No script copy** — plugin path only. If no `.env` or
-   no `imageRequests`, skip and tell user: add `.env` + `/doc-flow:generate-images` later.
-9. **Finish:** paths, KR table in chat, exec summary.
+5. **Viz plan:** dynamic `#viz` required; `ai-image` only when story needs it.
+6. **`viz-spec.json`** — charts/story from **scored KRs + worklog events** (not invented).
+7. **`index.html`** — embed **full text** read from this folder's brief/worklog/report
+   content you just wrote; same facts in tables and #viz data arrays.
+8. **`report.html`** — pyramid; link to index.
+9. **AI images:** if `.env` + `imageRequests`, run plugin script (user approves Bash).
 
-**Do not** replace dynamic #viz with images only. Tables remain source of truth for KR.
+10. **Finish:** list evidence gaps (e.g. "no worklog", "KR1 verify not run"), KR table, exec summary.
+
+**Do not** fill sections from README/legacy docs unless user explicitly points them as
+inputs for this slug. Layout without evidence is a failure mode — say so in chat.

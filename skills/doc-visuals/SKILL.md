@@ -199,4 +199,10 @@ when play, scrub, or highlight adds clarity.
 
 **Do not** use AI for: exact KR %, grep output, file contents — use dynamic + tables.
 
+### Factual accuracy (existing repos)
+
+Before `/report` HTML: read `docs/DATA-CONTRACT.md`. Sources = brief.html +
+worklog.md + git + KR verify commands only. Never ✅ without evidence output.
+Embed in index must match the same folder's files — not another task or README.
+
 Spec: `docs/superpowers/specs/2026-07-06-doc-flow-index-ai-integration-report.md`
