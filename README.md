@@ -13,7 +13,7 @@ lifecycle:
   plus **`index.html`** (single-file partner bundle: full brief + worklog + report
   + interactive #viz).
 
-Docs land in the project you run it from:
+Docs land in the **project you run Claude from** (not inside the doc-flow repo):
 
 ```
 docs/work/<date>-<slug>/
@@ -43,6 +43,76 @@ From git (for the team, once pushed):
 
 Restart Claude Code after installing.
 
+## Using as a plugin (generate docs in another repo)
+
+The plugin runs inside **Claude Code**; artifacts are written under **`docs/work/`**
+in whatever repository is your **current working directory**.
+
+### 1. Install once (per machine)
+
+```
+/plugin marketplace add /path/to/doc-flow
+/plugin install doc-flow@doc-flow
+```
+
+Restart Claude Code. Confirm commands exist: `/help` → `doc-flow:brainstorm`,
+`doc-flow:brief`, `doc-flow:work`, `doc-flow:report`.
+
+### 2. Open the target repo (not doc-flow)
+
+```bash
+cd /path/to/your-application-repo
+claude
+```
+
+Or open that folder in VS Code with Claude Code. All generated docs go here.
+
+### 3. Run the lifecycle
+
+| Step | Command | Output |
+|------|---------|--------|
+| (optional) | `/doc-flow:brainstorm <topic>` | `docs/work/<date>-<slug>/brainstorm.md` |
+| 1 | `/doc-flow:brief <task title or paths to notes>` | `brief.html` — review → **Approved** |
+| 2 | `/doc-flow:work` or `/doc-flow:work <slug>` | `worklog.md` (brief.html not edited) |
+| 3 | `/doc-flow:report` | `report.html`, **`index.html`**, `viz-spec.json` |
+
+**Primary deliverable for partners:** open `docs/work/.../index.html` in a browser
+(`file://` or static host). Reference layout:
+`docs/work/2026-07-04-worklog-verify/index.html` in this repo.
+
+### 4. Optional — AI sketch images (hybrid with dynamic #viz)
+
+After `/report`, if `viz-spec.json` includes `imageRequests`:
+
+```bash
+# VILAO_API_KEY in .env at repo root (or pass env)
+node /path/to/doc-flow/scripts/generate-viz-images.mjs docs/work/<date>-<slug>
+```
+
+Regenerates `generated-images/*.png` and matches warm paper / navy style. Dynamic
+charts in `#viz` stay the source of truth for KR numbers and timelines.
+
+### 5. Commit docs with the code
+
+```bash
+git add docs/work/
+git commit -m "docs: <task> brief, worklog, report bundle"
+```
+
+### Develop the plugin vs use it
+
+| Goal | Where you work |
+|------|----------------|
+| **Use plugin** | `cd <app-repo>` → slash commands → `docs/work/` under app-repo |
+| **Change plugin** | Edit `doc-flow/commands`, `templates`, `skills` → commit doc-flow → restart Claude |
+
+### Troubleshooting
+
+- Commands missing: re-run `/plugin install doc-flow@doc-flow`, restart session.
+- Use full prefix: `/doc-flow:brief`, not `/brief`.
+- Legacy tasks with only `brief.md`: `/work` and `/report` still work; regenerate
+  `brief.html` with `/doc-flow:brief`.
+
 ## Structure
 
 ```
@@ -65,6 +135,10 @@ templates/
   bundle.html
   html-shared.css
   worklog.md
+scripts/
+  generate-viz-images.mjs
+  render-viz-from-spec.mjs
+  verify-v03-checklist.sh
 ```
 
 ## Customizing
@@ -73,10 +147,13 @@ Edit `templates/brief.html` / `report.html` / `bundle.html` for layout;
 `skills/doc-visuals/SKILL.md` for diagram, OKR, and HTML viz rules.
 `brief-sections.md` / `report-sections.md` define required content headings.
 
+Integration spec (index + dynamic + AI):
+`docs/superpowers/specs/2026-07-06-doc-flow-index-ai-integration-report.md`.
+
 ## Roadmap
 
 - v0.1 — brief/report markdown + Mermaid
 - v0.2 — brainstorm, worklog, layered report
-- **v0.3 — HTML deliverables (brief.html, report.html, index.html), viz-first**
-- **v0.4 — index.html canonical + viz-spec + hybrid dynamic + optional AI images** (current direction)
+- v0.3 — HTML deliverables (brief.html, report.html, index.html), viz-first
+- v0.4 — index.html canonical + viz-spec + hybrid dynamic + optional AI images (current direction)
 - later — doc index, Confluence export
